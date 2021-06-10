@@ -1,0 +1,27 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Shell
+file_extensions: [shell]
+scope: source.shell
+
+contexts:
+  main:
+    - match: '(?<!\S)(#)(?!\{).*$\n?'
+      scope: comment.line.tok
+    - match: '^\$'
+      scope: variable.parameter.tok
+    - match: '"'
+      push:
+        - meta_scope: string.quoted.double.tok
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: '"'
+          pop: true
+    - match: "'"
+      push:
+        - meta_scope: string.quoted.double.tok
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: "'"
+          pop: true

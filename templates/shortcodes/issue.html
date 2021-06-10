@@ -1,0 +1,3 @@
+{% if "repository_url" in config.extra %}
+    <a href="{{ config.extra.repository_url }}/issues/{{ id }}">#{{ id }}</a>
+{% endif %}

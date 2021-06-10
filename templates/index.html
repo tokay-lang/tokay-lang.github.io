@@ -1,0 +1,141 @@
+{% import "_macros.html" as macros %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% include "_variables.html" %}
+    <link href="//fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body>
+    {% block header %}
+
+    <header class="pos-absolute">
+        {{ macros::render_header() }}
+    </header>
+
+    <div class="hero">
+        {% block hero %}
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <section class="text-center">
+            <h1 class="heading-text" style="font-size: 50px">
+               Ad-hoc parsing for everyone
+            </h1>
+            <h3 class="title-text">
+                Tokay is an imperative, procedural programming language
+                dedicated to parsing and other text-processing tasks.
+            </h3>
+            <div>
+                <a class="github-button" href="https://github.com/phorward/tokay" data-size="large" data-show-count="true"
+                   aria-label="Star Tokay on GitHub">Star</a>
+                <a class="github-button" href="https://github.com/phorward/tokay/fork" data-size="large"
+                   data-show-count="true" aria-label="Fork Tokay on GitHub">Fork</a>
+            </div>
+        </section>
+        <img class="hero-image" style="width: 50%" src="/tokay-icon.svg">
+
+        <div class="explore-more text"
+            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+            Explore More ⇩
+        </div>
+        {% endblock hero %}
+    </div>
+
+    {% endblock header %}
+
+    <main>
+        {% block toc %}
+            {% if section.toc %}
+                {% set toc = section.toc %}
+            {% elif section.pages %}
+                {% set toc = section.pages %}
+            {% elif page.toc %}
+                {% set toc = page.toc %}
+            {% endif %}
+
+            {% if toc %}
+                <div class="toc">
+                    <div class="toc-sticky">
+                        {% for h in toc %}
+                            <div class="toc-item">
+                                <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
+                            </div>
+
+                            {% set children = h.children %}
+                            {% if children %}
+                                {% for h2 in children %}
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="{{h2.permalink | safe}}"><small>- {{ h2.title }}</small></a>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock toc %}
+
+        <div class="content text">
+            {% block content %}
+                <div id="features" class="heading-text">Overview</div>
+                {{ section.content | safe }}
+            {% endblock content %}
+        </div>
+
+        {% block sidebar %}
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+    <footer>
+        <small class="subtext">
+            © 2021 by <a href="https://phorward.dev">Phorward Software Technologies, Jan Max Meyer</a><br>
+            Tokay is free software under the MIT license.
+        </small>
+    </footer>
+    {% endblock footer %}
+</body>
+<script>
+    function highlightNav(heading) {
+        let pathname = location.pathname;
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+        document.querySelector(".toc a[href$='" + pathname + "#" + heading + "']").classList.add("active");
+    }
+
+    let currentHeading = "";
+    window.onscroll = function () {
+        let h = document.querySelectorAll("h1,h2,h3,h4,h5,h6");
+        let elementArr = [];
+
+        h.forEach(item => {
+            if (item.id !== "") {
+                elementArr[item.id] = item.getBoundingClientRect().top;
+            }
+        });
+        elementArr.sort();
+        for (let key in elementArr) {
+            if (!elementArr.hasOwnProperty(key)) {
+                continue;
+            }
+            if (elementArr[key] > 0 && elementArr[key] < 300) {
+                if (currentHeading !== key) {
+                    highlightNav(key);
+                    currentHeading = key;
+                }
+                break;
+            }
+        }
+    }
+</script>
+
+</html>

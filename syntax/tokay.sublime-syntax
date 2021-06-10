@@ -1,0 +1,100 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Tokay
+file_extensions: [tok, tokay]
+first_line_match: "#!/usr/bin/tokay"
+scope: source.tok
+
+variables:
+  CONSTANT: '[A-Z_][A-Za-z_0-9]*'
+  VARIABLE: '[a-z][A-Za-z_0-9]*'
+
+contexts:
+  main:
+    - include: expression
+
+  identifier:
+    - match: '\$[0-9]+'
+      scope: variable.parameter.tok
+      push: infix-operator
+    - match: '\b{{CONSTANT}}|{{VARIABLE}}\b'
+      scope: variable.language.tok
+      push: infix-operator
+
+  value:
+    - match: '"'
+      push:
+        - meta_scope: string.quoted.double.tok
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: '"'
+          pop: true
+    - match: "'"
+      push:
+        - meta_scope: string.tok
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: "'"
+          pop: true
+    - match: '\['
+      push:
+        - meta_scope: ccl.quoted.single.tok
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: '\]'
+          pop: true
+    - match: '\b[0-9]+(?:\.[0-9]+)?(?:e[+-][0-9]+)?\b'
+      scope: constant.numeric.tok
+
+  block:
+    - match: '{'
+      scope: meta.brace.curly.tok
+      push:
+        - match: '}'
+          scope: meta.brace.curly.tok
+          pop: true
+        - include: main
+
+  expression:
+    - match: \b(accept|begin|end|expect|false|for|if|in|not|null|peek|reject|return|true|void|while)\b
+      scope: keyword.control.tok
+    - include: block
+    - include: value
+    - match: '(?<!\S)(#)(?!\{).*$\n?'
+      scope: comment.line.tok
+    - include: identifier
+    - include: prefix-operator
+    - include: groupings
+    - match: '(?=[\S])'
+      pop: true
+
+  groupings:
+    - match: \(
+      scope: meta.brace.round.tok
+    - match: \)
+      scope: meta.brace.round.tok
+      push: infix-operator
+    - match: \,
+      scope: punctuation.separator.parameters.tok
+
+  prefix-operator:
+    - match: '[+-]'
+      scope: keyword.operator.arithmetic.tok
+      set: expression
+
+  infix-operator:
+    - match: "[=<>!]="
+      scope: keyword.operator.comparison.tok
+      set: expression
+    - match: '[+\-*/]=|\+\+|--|=>|=|:'
+      scope: keyword.operator.assignment.tok
+      set: expression
+    - match: \|\||&&|!
+      scope: keyword.operator.boolean.tok
+      set: expression
+    - match: '[+\-*/]'
+      scope: keyword.operator.arithmetic.tok
+      set: expression
+    - match: '(?=[\S])'
+      pop: true

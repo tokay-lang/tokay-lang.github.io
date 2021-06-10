@@ -1,0 +1,22 @@
+title = "Tokay - A text-processing programming language"
+base_url = "https://tokay.dev"
+compile_sass = true
+build_search_index = false
+insert_anchor_links = true
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+highlight_theme = "kronuz"
+extra_syntaxes = [
+    "syntax"
+]
+
+[extra]
+logo_path = "tokay-logo.svg"
+logo_name = "Tokay Programming Language"
+
+extra_menu = [
+    { title = "Github", link = "https://github.com/phorward/tokay"}
+]
