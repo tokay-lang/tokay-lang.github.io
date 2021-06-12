@@ -57,7 +57,7 @@ contexts:
         - include: main
 
   expression:
-    - match: \b(accept|begin|end|expect|false|for|if|in|not|null|peek|reject|return|true|void|while)\b
+    - match: \b(accept|begin|else|end|expect|false|for|if|in|not|null|peek|reject|return|true|void|while)\b
       scope: keyword.control.tok
     - include: block
     - include: value

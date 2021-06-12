@@ -29,6 +29,10 @@ h2, .subtitle-text {
   line-height: 26px;
   letter-spacing: 0.2px;
   color: var(--primary-text-color);
+
+  & p {
+    margin: 12px 2px;
+  }
 }
 
 .subtext {

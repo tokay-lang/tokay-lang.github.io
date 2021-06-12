@@ -3,6 +3,100 @@ title = "Documentation"
 weight = 2
 +++
 
+# Values
+
+First of all, let's shortly discuss *values*. Values are used everywhere in a Tokay program, even where its not directly obvious. Generally speaking, in Tokay, everything is some kind of value.
+
+*Atomic* values are one of the following.
+
+```tokay
+void                        # is a value representing just nothing
+null                        # is a value representing a defined "set to nothing"
+true false                  # boolean values
+42 -23                      # signed 64-bit integers
+3.1415 -1.337               # signed 64-bit floats
+"Glasflügel Libelle 201b"   # is a unicode string
+```
+
+Values can also be one of the following *objects*.
+
+```tokay
+# list of values
+(42, true, "yes")
+(42 true yes)
+
+# dictionary (dict), a map of key-value-pairs
+(i => 42, b => true, status => "success")
+(i => 42 b => true status => "success")
+
+# tokens are callables consuming input from the stream
+'string'  # match single string from input
+[A-Z0-9]+  # character-class matching a string
+
+# functions and parselets are callable blocks of code
+f : @x{ x * 2 }
+f(9)  # 18
+@x{ x * 3 }(5)  # 18, by anonymous function that is directly called
+```
+
+# Variables and constants
+
+Values can either be stored as *variables* or *constants* as symbolic identifiers.
+```tokay
+variable = 0  # assign 0 to a variable
+constant : 0  # assign 0 to a constant
+```
+Obviously, this looks like the same. `variable` becomes 0 and `constant` also. Let's try to modify these values afterwards.
+```tokay
+variable += 1  # increment variable by 1
+constant += 1  # throws compile error: Cannot assign to constant 'constant'
+```
+Now `variable` becomes 1, but `constant` can't be assigned and Tokay throws an error during compile-time.
+What you can do is to redefine the constant with a new value.
+```tokay
+variable++    # increment variable by 1
+constant : 1  # re-assign constant to 1
+```
+The reason is, that variables are evaluated at runtime, whereas constants are evaluated at compile-time, before the program is being executed.
+
+The distinction between variables and constants is a tradeoff between flexibility and predictivity to make different concepts behind Tokay possible. The values of variables aren't known at compile-time, therefore predictive construction of code depending on the values used is not possible. On the other hand, constants can be used before their definition, which is very useful when thinking of functions and parselets being called by other functions and parselets before their definition.
+
+# Callables and consumables
+
+From the object types presented above, tokens and functions have two special properties:
+
+- Tokens are always callable and considered to consume input
+- Functions are always callable and are named
+    - *parselets* when they consume input by either using tokens or a consumable constant
+    - *functions* when they don't consume any input
+
+For variables and constants, special naming rules apply which allow Tokay to determine a symbol type based on its identifier.
+
+1. Consumable constants must start with an upper-case letter or an underscore
+2. Non-consumable constants and variables must start with a lower-case letter
+
+Some examples for clarification:
+```tokay
+Pi : 3.1415  # Error: Cannot assign non-consumable to consumable constant.
+pi : 3.1415  # Ok
+
+Cident : [A-Za-z_] [A-Za-z0-9_]*
+cident : Cident  # Error: Cannot assign consumable to non-consumable constant.
+NewCident : Cident  # Ok
+
+faculty : @n {
+    if n <= 0 return 1
+    return n * faculty(n - 1)
+}
+Faculty : faculty  # Error: Cannot assign non-consumable to consumable constant.
+
+Faculty : @{
+    if Cident == "Faculty" accept
+    reject
+}  # Ok, because the function is a parselet because it calls Cident
+```
+
+
 # Concepts
 
 ## Sequences and blocks
@@ -75,43 +169,6 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 
 todo
 
-# Values & Objects
-
-Tokay distinguishes between two symbolic types used to store *values*. These are *variables* and *constants*.
-
-First of all, let's shortly discuss *values*. Values are used everywhere in a Tokay program, even where its not directly obvious.
-
-In Tokay, a value can be either one type of the following *atomics*
-
-```tokay
-void  # is a value representing just nothing
-null  # is a value representing a defined "set to nothing"
-true false  # boolean values
-42 -23  # signed 64-bit integers
-3.1415 -1.337  # signed 64-bit floats
-"Glasflügel Libelle 201b"  # is a unicode string
-```
-
-Values can also be one type of the following *objects*:
-
-```tokay
-# list of values
-(42, true, "yes")
-(42 true yes)
-
-# dictionary (dict), a map of key-value-pairs
-(i => 42, b => true, status => "success")
-(i => 42 b => true status => "success")
-
-# tokens are callables objects consuming input from the stream
-'string'  # match single string from input
-[A-Z0-9]+  # character-class matching a string
-
-# functions and parselets are callable objects
-f : @x{ x * 2 }
-f(9)  # 18
-@x{ x * 3 }(5)  # 18, by anoymous function directly called
-```
 
 ## Variables
 
