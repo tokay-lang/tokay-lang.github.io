@@ -1,6 +1,6 @@
-# docs/
+# Tokay Site
 
-The docs folder contains the full documentation of the Tokay programming language.
+The repository contains the landing website and documentation for the [Tokay programming language](https://tokay.dev).
 
 ## Origin
 
