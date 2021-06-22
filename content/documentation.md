@@ -3,19 +3,66 @@ title = "Documentation"
 weight = 2
 +++
 
-# Values
+# Preface
 
-First of all, let's shortly discuss *values*. Values are used everywhere in a Tokay program, even where its not directly obvious. Generally speaking, in Tokay, everything is some kind of value.
+Tokay programs are expressed and executed differently as in common programmming languages like Python or Rust. Therefore, Tokay is not "yet another programming language".
+It was designed with the goal to let its programs directly operate on input streams read from files, strings, piped commands or any other device emitting characters.
+
+The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of our solar system:
+
+```tokay
+'Hello' _ {
+    'Mercury'
+    'Venus'
+    'Earth'
+}
+```
+
+In comparison to other programming languages, there's no explicit branching, substring extraction or reading from input required, as this is directly built into the language and its entire structuring.
+
+# Structure
+
+Tokay code is structured of *items* inside of *sequences* that are ordered in *blocks*.
+
+- **Items** are
+  - expressions like `1 + 2` or `++i * 3`
+  - assignments like `x = 42` or `s += "duh"`
+  - calls to `'tokens'`, `functions()` or `Parselets`
+  - control flow instructions like `if x == 42 "yes" else "no"`
+  - and even further `{ blocks }`
+- **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
+- **Blocks** are defined by curly braces `{...}` and introduce a new scope of sequences. Sequences in a block are executed in order until an item *accepts* or *rejects* the entire block.
+
+These are the three basic elements in Tokay which complement among each other. The code structuring is shown in the pseudo-code example below.
+```tokay
+{  # a block...
+    # ... has sequences
+    item¹ item² item³ ... # made of items.
+
+    item¹ {  # an item of a sequence can be a block again
+        item¹ item² ... # which contains further sequences with items
+    }
+
+    {}  # this empty block is the only item of the third sequence of the outer block
+}
+```
+
+Items can either *accept* or *reject* their sequences and surrounding blocks during execution. This accepting or rejecting can occur with different priorities that depend on the type of item being executed.
+
+
+# Expressions
+
+Expressions are resulting in *values*. Let's discuss the meaning of values in Tokay first. Values are used everywhere, even when its not directly obvious. Generally speaking, everything in Tokay is some kind of value or part of a value.
 
 *Atomic* values are one of the following.
 
 ```tokay
-void                        # is a value representing just nothing
-null                        # is a value representing a defined "set to nothing"
+void                        # values to representing just nothing
+null                        # values representing a defined "set to null"
 true false                  # boolean values
 42 -23                      # signed 64-bit integers
 3.1415 -1.337               # signed 64-bit floats
-"Glasflügel Libelle 201b"   # is a unicode string
+"Glasflügel Libelle 201b"   # unicode strings
 ```
 
 Values can also be one of the following *objects*.
@@ -23,25 +70,30 @@ Values can also be one of the following *objects*.
 ```tokay
 # list of values
 (42, true, "yes")
-(42 true yes)
+(42 true "yes")
 
 # dictionary (dict), a map of key-value-pairs
 (i => 42, b => true, status => "success")
 (i => 42 b => true status => "success")
 
 # tokens are callables consuming input from the stream
-'string'  # match single string from input
-[A-Z0-9]+  # character-class matching a string
+'touch'    # non-verbose touch string in the input
+''match''  # verbose match a string from the input
+[A-Z0-9]+  # character-class matching a sequence of valid characters
+Integer    # built-in token parsing and returning Integer values
 
-# functions and parselets are callable blocks of code
+# functions and parselets are callable, enclosed blocks of code
 f : @x{ x * 2 }
 f(9)  # 18
-@x{ x * 3 }(5)  # 18, by anonymous function that is directly called
+
+@x{ x * 3 }(5)  # 18, returned by anonymous function that is called in-place
 ```
 
-# Variables and constants
+Objects are discussed in detail in a later chapter below.
 
-Values can either be stored as *variables* or *constants* as symbolic identifiers.
+## Variables and constants
+
+Symbolic identifiers for replaceable values can either be *variables* or *constants*.
 ```tokay
 variable = 0  # assign 0 to a variable
 constant : 0  # assign 0 to a constant
@@ -59,7 +111,7 @@ constant : 1  # re-assign constant to 1
 ```
 The reason is, that variables are evaluated at runtime, whereas constants are evaluated at compile-time, before the program is being executed.
 
-The distinction between variables and constants is a tradeoff between flexibility and predictivity to make different concepts behind Tokay possible. The values of variables aren't known at compile-time, therefore predictive construction of code depending on the values used is not possible. On the other hand, constants can be used before their definition, which is very useful when thinking of functions and parselets being called by other functions and parselets before their definition.
+The distinction between variables and constants is a tradeoff between flexibility and predictivity to make different concepts behind Tokay possible. The values of variables aren't known at compile-time, therefore predictive construction of code depending on the values used is not possible. On the other hand, constants can be used before their definition, which is very useful when thinking of functions being called by other functions before their definition.
 
 # Callables and consumables
 
@@ -80,7 +132,7 @@ Some examples for clarification:
 Pi : 3.1415  # Error: Cannot assign non-consumable to consumable constant.
 pi : 3.1415  # Ok
 
-Cident : [A-Za-z_] [A-Za-z0-9_]*
+Cident : [A-Za-z_] [A-Za-z0-9_]* $0
 cident : Cident  # Error: Cannot assign consumable to non-consumable constant.
 NewCident : Cident  # Ok
 
@@ -93,7 +145,30 @@ Faculty : faculty  # Error: Cannot assign non-consumable to consumable constant.
 Faculty : @{
     if Cident == "Faculty" accept
     reject
-}  # Ok, because the function is a parselet because it calls Cident
+}  # Ok, because the function is a parselet as it calls Cident
+```
+
+# Scopes
+
+Variables and constants are organized in scopes.
+
+1. A scope is any `{block}` level, and the global scope.
+2. Constants can be defined in any scope. Overridden constants become invalid and are replaced by their previous definition.
+3. Variables are only distinguished between a global and a local scope of a parselet block. Unknown variables used in a parselet block are considered as local variables.
+
+Here's some commented code for clarification:
+```tokay
+x = 10  # global scope variable
+y : 2000  # global scope constant
+z = 30  # global scope variable
+
+# entering new scope of function f
+f : @x {  # x is overridden as local variable
+    y : 1000  # local constant y
+    z + y + x # adds global value of z, local constant y and local value of x
+}
+
+# back in global scope
 ```
 
 
@@ -101,36 +176,7 @@ Faculty : @{
 
 ## Sequences and blocks
 
-Everything in Tokay is a *sequence* that belongs to a *block*.
 
-You already saw both of them in the first steps above. For example, `'Hello World' count += 1` is a sequence with two items. First item is a match-token, second item is an add-assignment-operation, a shortcut for `a = a + 1`.
-
-As the name implies, sequences are executed *sequentially*, item by item, and every item can accept or reject the entire sequence. In case the match-token `'Hello World'` from above is NOT matched in the input, the sequence is rejected. Otherwise, the add-assignment follows.
-
-Every sequence finishes at the end of the line, therefore no special syntax is used. A semicolon `;` can optionally be used to define multiple sequences in one line.
-
-When a sequence rejects, the next sequence in the same *block* will be executed. A block can be seen as a sequence of sequences, and is syntactically defined by curly braces `{...}`.
-
-Essentially, a block has the following structure:
-```tokay
-{
-    Sequence¹
-    Sequence²
-    Sequence³
-    ...
-}
-```
-Tokay's main scope is also an implicit block. Therefore, you don't have to put curly braces at first, because you directly start your program inside of a block, and all lines of code you add there are sequences in the main block.
-
-Blocks can become items of other sequences. Here's an example how:
-```tokay
-'Hello ' {
-    'Mercury'
-    'Venus'
-    'Earth'
-}
-```
-Above code can also be shortened as a one-liner this way `'Hello ' { 'Mercury' ; 'Venus' ; 'Earth' }`.
 
 ## Captures
 

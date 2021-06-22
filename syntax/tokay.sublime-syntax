@@ -25,14 +25,21 @@ contexts:
   value:
     - match: '"'
       push:
-        - meta_scope: string.quoted.double.tok
+        - meta_scope: string.quoted.tok
         - match: \\.
           scope: constant.character.escape.tok
         - match: '"'
           pop: true
+    - match: "''"
+      push:
+        - meta_scope: string.tok.match
+        - match: \\.
+          scope: constant.character.escape.tok
+        - match: "''"
+          pop: true
     - match: "'"
       push:
-        - meta_scope: string.tok
+        - meta_scope: string.tok.touch
         - match: \\.
           scope: constant.character.escape.tok
         - match: "'"
