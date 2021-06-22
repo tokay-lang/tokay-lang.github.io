@@ -6,10 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/main'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@master
+        uses: actions/checkout@main
       - name: 'Build only' 
         uses: shalzz/zola-deploy-action@master
         env:
@@ -18,10 +18,10 @@ jobs:
           BUILD_ONLY: true
   build_and_deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@master
+        uses: actions/checkout@main
       - name: 'Build and deploy'
         uses: shalzz/zola-deploy-action@master
         env:
