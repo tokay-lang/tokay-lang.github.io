@@ -16,7 +16,7 @@ contexts:
 
   identifier:
     - match: '\$[0-9]+'
-      scope: variable.parameter.tok
+      scope: variable.language.tok
       push: infix-operator
     - match: '\b{{CONSTANT}}|{{VARIABLE}}\b'
       scope: variable.language.tok
@@ -64,7 +64,7 @@ contexts:
         - include: main
 
   expression:
-    - match: \b(accept|begin|else|end|expect|false|for|if|in|not|null|peek|reject|return|true|void|while)\b
+    - match: \b(accept|begin|else|end|expect|false|if|in|not|null|peek|reject|repeat|return|true|void)\b
       scope: keyword.control.tok
     - include: block
     - include: value

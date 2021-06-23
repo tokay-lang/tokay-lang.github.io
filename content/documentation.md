@@ -20,39 +20,103 @@ The most obvious example to show how Tokay executes its programs is this little 
 
 In comparison to other programming languages, there's no explicit branching, substring extraction or reading from input required, as this is directly built into the language and its entire structuring.
 
-# Structure
+If you're familiar with the [awk](https://en.wikipedia.org/wiki/AWK) language, you might find a similarity in above example to awk's `PATTERN { action }` syntax. This is exactly where the intention behind Tokay starts, but not by thinking of a line-based execution working on fields, but a token-based approach working on anything matched from the input.
 
-Tokay code is structured of *items* inside of *sequences* that are ordered in *blocks*.
+# Syntax
 
-- **Items** are
-  - expressions like `1 + 2` or `++i * 3`
-  - assignments like `x = 42` or `s += "duh"`
-  - calls to `'tokens'`, `functions()` or `Parselets`
-  - control flow instructions like `if x == 42 "yes" else "no"`
-  - and even further `{ blocks }`
-- **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
-- **Blocks** are defined by curly braces `{...}` and introduce a new scope of sequences. Sequences in a block are executed in order until an item *accepts* or *rejects* the entire block.
+First of all, some explantions about Tokays syntax.
 
-These are the three basic elements in Tokay which complement among each other. The code structuring is shown in the pseudo-code example below.
+## Comments
+
+Tokay currently supports line-comments, starting with a `#`. The rest of the line will be ignored.
+
 ```tokay
-{  # a block...
-    # ... has sequences
-    item¹ item² item³ ... # made of items.
-
-    item¹ {  # an item of a sequence can be a block again
-        item¹ item² ... # which contains further sequences with items
-    }
-
-    {}  # this empty block is the only item of the third sequence of the outer block
-}
+# This is a comment
+a = 10  # this is also a comment.
 ```
 
-Items can either *accept* or *reject* their sequences and surrounding blocks during execution. This accepting or rejecting can occur with different priorities that depend on the type of item being executed.
+## Reserved words
+
+In Tokay, the following are reserved words for control structures and special behaviors.
+
+```tokay
+accept begin else end expect false if not null peek reject repeat return true void
+```
+This list is currently incomplete, as Tokay is under heavy development. For example, there might be one `loop`-keyword but also variants of `for` and `while`, which currently is under consideration.
+
+## Identifiers
+
+Naming rules for identifiers in Tokay differ to other programming languages, and this is an essential feature.
+
+1. As known from other languages, identifiers might **not** start with a digit (`0-9`).
+2. Variables have to start with a lower-case letter from (`a-z`)
+3. Constants have to start either
+   - with an upper-case letter (`A-Z`) or an underscore (`_`) when they refer consumable values,
+   - otherwise they can also start with a lower-case letter from (`a-z`).
+
+More about *consumable* and *non-consumable* values, *variables* and *constants* will be discussed later.
+
+## Sequences
+
+Sequences are a fundamental and powerful feature of Tokay, as you will see later. We will only discuss their syntax and simple examples here for now.
+
+Every single value, call, expression, control-flow statement or even block is considered as an item. We will discuss blocks shortly.
+Those items can be chained to a sequences directly in every line of a Tokay program.
+```tokay
+1 2 3 + 4    # results in a list (1, 2, 7)
+```
+For better readability, items of a sequence can also be optionally separated by commas (`,`), so
+```tokay
+1, 2, 3 + 4  # (1, 2, 7)
+```
+is the same.
+
+All items of a sequence with a given severity are used to determine the result of the sequence. Therefore, these sequences return `(1, 2, 7)` in the above example, when entered in a Tokay REPL. Severities and automatic value construction of sequences will be handled later on.
+
+The items of a sequence are captured, so they can be accessed inside of the sequence using *capture variables*. In the next example, the first capture, which holds the result `7` from the expression `3 + 4` is referenced with `$1` and used in the second item as value of the expression. Referencing a capture which is out of bounds will just return a `void` value.
+```tokay
+3 + 4, $1 * 2  # (7, 14)
+```
+Captures can also be re-assigned by following captures. This one assigns a value at the second item to the first item, and uses the first item inside of the calculation. The second item anyway exists and refers to `void`. This is the reason why Tokay has two values to simply define nothing, which are `void` and `null`.
+```tokay
+3 + 4, $3 = $3 * 2  # 14
+```
+As the result of the above sequence, just one value results which is `14`, but the second item's value, `void`, has a lower severity than the calculated and assigned first value. This is the magic with sequences that you will soon figure out in detail, especially when tokens from streams are accessed and processed, or your programs work on extracted information from the input.
+
+As the last example, we shortly show how sequence items can also be named and can be accessed by their name.
+```tokay
+hello => "Hello", $hello = 3 * $hello  # (hello => "HelloHelloHello")
+```
+Here, the first item, which is referenced by the capture variable `$hello` is repeated 3 times as the second item.
+This might be quite annoying, but the result of this sequence is a dict. A dict is a hash-table where values can be referenced by a key.
 
 
-# Expressions
+## Newlines
 
-Expressions are resulting in *values*. Let's discuss the meaning of values in Tokay first. Values are used everywhere, even when its not directly obvious. Generally speaking, everything in Tokay is some kind of value or part of a value.
+In Tokay, newlines and line-breaks respectively (`\n`) are meaningful. They separate sequences from each other, as you will learn in the next section.
+
+```tokay
+"1st" "sequence"
+"2nd" "sequence"
+"3rd" "sequence"
+```
+
+Instead of a newline, a semicolon (`;`) can also be used, which has the same meaning. A single-line sequence can be split into multiple lines by preceding a backslash in front of the line-break.
+
+```tokay
+"1st" \
+    "sequence"
+"2nd" "sequence" ; "3rd" "sequence"
+```
+The first and second example are literally the same.
+
+## Blocks
+
+
+
+# Values
+
+Let's discuss the meaning of values in Tokay next. Values are used everywhere, even when its not directly obvious. Generally speaking, everything in Tokay is some kind of value or part of a value.
 
 *Atomic* values are one of the following.
 
@@ -77,10 +141,10 @@ Values can also be one of the following *objects*.
 (i => 42 b => true status => "success")
 
 # tokens are callables consuming input from the stream
-'touch'    # non-verbose touch string in the input
-''match''  # verbose match a string from the input
-[A-Z0-9]+  # character-class matching a sequence of valid characters
-Integer    # built-in token parsing and returning Integer values
+'touch'    # silently touch a string in the input
+''match''  # verbosely match a string from the input
+[A-Z0-9]+  # matching a sequence of valid characters
+Integer    # built-in token for parsing and returning Integer values
 
 # functions and parselets are callable, enclosed blocks of code
 f : @x{ x * 2 }
@@ -93,7 +157,7 @@ Objects are discussed in detail in a later chapter below.
 
 ## Variables and constants
 
-Symbolic identifiers for replaceable values can either be *variables* or *constants*.
+Symbolic identifiers for named values can either be defined as *variables* or *constants*.
 ```tokay
 variable = 0  # assign 0 to a variable
 constant : 0  # assign 0 to a constant
@@ -103,7 +167,7 @@ Obviously, this looks like the same. `variable` becomes 0 and `constant` also. L
 variable += 1  # increment variable by 1
 constant += 1  # throws compile error: Cannot assign to constant 'constant'
 ```
-Now `variable` becomes 1, but `constant` can't be assigned and Tokay throws an error during compile-time.
+Now `variable` becomes 1, but `constant` can't be assigned and Tokay throws a compile error.
 What you can do is to redefine the constant with a new value.
 ```tokay
 variable++    # increment variable by 1
@@ -113,19 +177,19 @@ The reason is, that variables are evaluated at runtime, whereas constants are ev
 
 The distinction between variables and constants is a tradeoff between flexibility and predictivity to make different concepts behind Tokay possible. The values of variables aren't known at compile-time, therefore predictive construction of code depending on the values used is not possible. On the other hand, constants can be used before their definition, which is very useful when thinking of functions being called by other functions before their definition.
 
-# Callables and consumables
+## Callables and consumables
 
-From the object types presented above, tokens and functions have two special properties:
+From the object types presented above, tokens and functions have the special properties that they are *callable* and possibly *consumable*.
 
 - Tokens are always callable and considered to consume input
 - Functions are always callable and are named
     - *parselets* when they consume input by either using tokens or a consumable constant
     - *functions* when they don't consume any input
 
-For variables and constants, special naming rules apply which allow Tokay to determine a symbol type based on its identifier.
+For variables and constants, special naming rules apply which allow Tokay to determine a symbol type based on its identifier only.
 
-1. Consumable constants must start with an upper-case letter or an underscore
-2. Non-consumable constants and variables must start with a lower-case letter
+1. Consumable, callable constants must start with an upper-case letter **A-Z** or an underscore **_**.
+2. Non-consumable or not callable constants and any variable must start with a lower-case letter **a-z**.
 
 Some examples for clarification:
 ```tokay
@@ -138,22 +202,21 @@ NewCident : Cident  # Ok
 
 faculty : @n {
     if n <= 0 return 1
-    return n * faculty(n - 1)
+    n * faculty(n - 1)
 }
 Faculty : faculty  # Error: Cannot assign non-consumable to consumable constant.
 
-Faculty : @{
-    if Cident == "Faculty" accept
-    reject
+IsOkay : @{
+    Integer if $1 > 100 && $1 < 1000 accept
 }  # Ok, because the function is a parselet as it calls Cident
 ```
 
-# Scopes
+## Scopes
 
 Variables and constants are organized in scopes.
 
 1. A scope is any `{block}` level, and the global scope.
-2. Constants can be defined in any scope. Overridden constants become invalid and are replaced by their previous definition.
+2. Constants can be defined in any scope. They can be re-defined by other constants in the same or in subsequent blocks. Constants being re-defined in a subsequent block are valid until the block ends, afterwards the previous constant will be valid again.
 3. Variables are only distinguished between a global and a local scope of a parselet block. Unknown variables used in a parselet block are considered as local variables.
 
 Here's some commented code for clarification:
@@ -164,23 +227,53 @@ z = 30  # global scope variable
 
 # entering new scope of function f
 f : @x {  # x is overridden as local variable
-    y : 1000  # local constant y
-    z + y + x # adds global value of z, local constant y and local value of x
+    y : 1000  # local constant y overrides global constant y temporarily
+    z += y + x # adds local constant y and local value of x to global value of z
 }
 
-# back in global scope
+f(42)
+
+# back in global scope, y is 2000 again, z is 1072 now.
 ```
 
 
-# Concepts
+## Blocks, sequences and items
 
-## Sequences and blocks
+Tokay code is structured by *items* inside of *sequences* that are ordered in *blocks*.
 
+- **Blocks** are defined by curly braces `{...}` and introduce a new alternation of sequences. Sequences in a block are executed in order until an item of a sequence or the sequence itself *accepts* or *rejects* the block.
+- **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
+*rejects* the entire block.
+- **Items** are
+  - expressions like `1 + 2` or `++i * 3`
+  - assignments like `x = 42` or `s += "duh"`
+  - calls to `'tokens'`, `functions()` or `Parselets`
+  - control flow instructions like `if x == 42 "yes" else "no"`
+  - and even further `{ blocks }`
+
+These are the three basic elements in Tokay which complement among each other. The code structuring is shown in the pseudo-code example below.
+
+```tokay
+{  # a block...
+    # ... has sequences
+    item¹ item² item³ ... # made of items.
+
+    item¹ {  # an item of a sequence can be a block again
+        item¹ item² ... # which contains further sequences with items
+    }
+
+    {}  # this empty block is the only item of the third sequence of the outer block
+}
+```
+
+Every item can either accept or reject its sequence. This is essential for the stream-directed approach Tokay follows. When a token, say `'Hello'`, from the example in the preface, doesn't match the current input, any following items are not being executed. The token is being accepted when the input is exactly `Hello`, otherwise it is rejected, and a possible next alternative can be tried.
+
+This does apply to any item in tokay, but there are different priorities for either accept or reject, which will be discussed in detail for related items later.
 
 
 ## Captures
 
-Sequence items are captured during sequence execution. This means that they are temporarily pushed and hold onto a stack, for further access. It is possible to access previously captured items using *capture variables*. Capture variables start with a dollar-sign `$` followed either by an index, an aliased name or any Tokay expression which evalutes to an index or an aliased named dynamically.
+Items in sequences are captured during execution. They are temporarily pushed and hold onto a stack, for later access. It is possible to access previously captured items using *capture variables*. Capture variables start with a dollar-sign `$` followed either by an index, an aliased name or any Tokay expression which evalutes to an index or an aliased named dynamically.
 
 Here are some examples:
 ```tokay
@@ -210,87 +303,3 @@ Name {
 $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 ("Mercury", "Venus (neighbour)", "Home", "Mars (neighbour)", "Jupiter")
 ```
-
-## Parselets
-
-todo
-
-
-## Variables
-
-Variables are values referenced by names which are evaluted at runtime. They can be set to any of the above value types, and constructed, assigned and modified in any order.
-
-To assign variables, either use the assignment operators `=`, `+=`, `-=`, `*=`, `/=`, or by inplace pre- or postfix incrementation and decrementation operators `++` and `--`.
-
-Examples:
-```tokay
-a = 42
-b = true
-c += 4  # equal to `c = void + 4`
-
-# construction of a list (commas are optional)
-l = (a  b  c + 2)  # `(42, true, 6)`
-
-# construction of a dictionary (commas are optional)
-d = (x => a  y => b  z => c + 3) # `(x => 42, y => true, z = 7)`
-
-# assign a callable function
-counter = @{
-    # count from 0 to 9...
-    for i = 0; i < 10; i++
-        print(i)
-}
-
-# implicit call of the function
-counter
-# explicit call of the function
-counter()
-```
-
-Variable identifiers are restricted to start with a lower-case character. Any other character is not permitted. So `x`, `y2`, `alpha` are valid, same as `bravoCharlie2` and `delta_echo`, but not `FoxtrotGolf`.
-
-Variables can be defined globally or locally inside of a parselet. More about this follows later in the specific chapter.
-
-Rules for variables:
-
-1. Must start with a lower-case character.
-2. Are distinguished between global and local scope.
-
-## Constants
-
-Constants are values evaluated at compile-time, before any program code is executed. Their values can't be changed or constructed, therefore constant may only be set to immutable values.
-
-To define and assign a constant, use the `:` operator. Constants can be redefined several times.
-
-Examples:
-```tokay
-# Pi as a constant
-pi : 3.1415
-
-# Debug flag
-print(debug)  # `true`  (constant is backpatched)
-debug : true
-print(debug)  # `true`
-debug : false
-print(debug)  # `false`
-
-debug = true  # forbidden, cannot assign to constant
-
-# Constant function
-faculty : @x {
-    if !x return 1
-    x * faculty(x - 1)
-}
-
-# C-style identifier
-Identifier : [A-Za-z_] [A-Za-z0-9_]*
-
-# Constant parselet
-HelloWorlds : @{
-    'Hello' 'World'+  # matches one or more "World"...
-}
-```
-
-# Built-ins
-
-todo
