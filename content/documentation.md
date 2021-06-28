@@ -5,10 +5,9 @@ weight = 2
 
 # Preface
 
-Tokay programs are expressed and executed differently as in common programmming languages like Python or Rust. Therefore, Tokay is not "yet another programming language".
-It was designed with the goal to let its programs directly operate on input streams read from files, strings, piped commands or any other device emitting characters.
+Tokay programs are expressed and executed differently as in common programmming languages like Python or Rust. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
 
-The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of our solar system:
+The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of the solar system.
 
 ```tokay
 'Hello' _ {
@@ -20,24 +19,24 @@ The most obvious example to show how Tokay executes its programs is this little 
 
 In comparison to other programming languages, there's no explicit branching, substring extraction or reading from input required, as this is directly built into the language and its entire structuring.
 
-If you're familiar with the [awk](https://en.wikipedia.org/wiki/AWK) language, you might find a similarity in above example to awk's `PATTERN { action }` syntax. This is exactly where the intention behind Tokay starts, but not by thinking of a line-based execution working on fields, but a token-based approach working on anything matched from the input.
+If you're familiar with the [awk](https://en.wikipedia.org/wiki/AWK) language, you might find a similarity in above example to awk's `PATTERN { action }` syntax. This is exactly where the intention behind Tokay starts, but not by thinking of a line-based execution working on fields, but a token-based approach working on anything matched from the input, including recursive structures that can be expressed by a grammar.
 
 # Syntax
 
-First of all, some explantions about Tokays syntax.
+Let's start with some explanations about Tokays syntax and fundamental building blocks first.
 
 ## Comments
 
-Tokay currently supports line-comments, starting with a `#`. The rest of the line will be ignored.
+Tokay currently only supports line-comments, starting with a hash (`#`). The rest of the line will be ignored.
 
 ```tokay
 # This is a comment
-a = 10  # this is also a comment.
+hash = "# this is a string"  # this is also a comment.
 ```
 
 ## Reserved words
 
-In Tokay, the following are reserved words for control structures and special behaviors.
+In Tokay, the following keywords are reserved words for control structures and special behaviors.
 
 ```tokay
 accept begin else end expect false if not null peek reject repeat return true void
@@ -48,11 +47,27 @@ This list is currently incomplete, as Tokay is under heavy development. For exam
 
 Naming rules for identifiers in Tokay differ to other programming languages, and this is an essential feature.
 
-1. As known from other languages, identifiers might **not** start with a digit (`0-9`).
-2. Variables have to start with a lower-case letter from (`a-z`)
-3. Constants have to start either
+1. As known from other languages, identifiers may not start with any digit (`0-9`).
+2. Variables need to start with a lower-case letter from (`a-z`)
+3. Constants need to start either
    - with an upper-case letter (`A-Z`) or an underscore (`_`) when they refer consumable values,
    - otherwise they can also start with a lower-case letter from (`a-z`).
+
+Some examples for better understanding:
+```tokay
+# Valid
+pi : 3.1415
+mul2 : @x { x * 2 }
+Planet : @{ 'Venus' ; 'Earth'; 'Mars' }
+the_Tribe = "Apache"
+
+# Invalid
+Pi : 3.1415  # float value is not consumable
+planet : @{ 'Venus' ; 'Earth'; 'Mars' }  # identifier must specify consumable
+The_Tribe = "Cherokee"  # Upper-case variable name not allowed
+
+9th = 9  # interpreted as '9 th = 9'
+```
 
 More about *consumable* and *non-consumable* values, *variables* and *constants* will be discussed later.
 
@@ -61,7 +76,7 @@ More about *consumable* and *non-consumable* values, *variables* and *constants*
 Sequences are a fundamental and powerful feature of Tokay, as you will see later. We will only discuss their syntax and simple examples here for now.
 
 Every single value, call, expression, control-flow statement or even block is considered as an item. We will discuss blocks shortly.
-Those items can be chained to a sequences directly in every line of a Tokay program.
+Those items can be chained to a sequence directly in every line of a Tokay program.
 ```tokay
 1 2 3 + 4    # results in a list (1, 2, 7)
 ```
@@ -69,31 +84,30 @@ For better readability, items of a sequence can also be optionally separated by 
 ```tokay
 1, 2, 3 + 4  # (1, 2, 7)
 ```
-is the same.
+encodes the same.
 
-All items of a sequence with a given severity are used to determine the result of the sequence. Therefore, these sequences return `(1, 2, 7)` in the above example, when entered in a Tokay REPL. Severities and automatic value construction of sequences will be handled later on.
+All items of a sequence with a given severity are used to determine the result of the sequence. Therefore, these sequences return `(1, 2, 7)` in the above examples when entered in a Tokay REPL. Severities and automatic value construction of sequences will be discussed later on.
 
 The items of a sequence are captured, so they can be accessed inside of the sequence using *capture variables*. In the next example, the first capture, which holds the result `7` from the expression `3 + 4` is referenced with `$1` and used in the second item as value of the expression. Referencing a capture which is out of bounds will just return a `void` value.
 ```tokay
 3 + 4, $1 * 2  # (7, 14)
 ```
-Captures can also be re-assigned by following captures. This one assigns a value at the second item to the first item, and uses the first item inside of the calculation. The second item anyway exists and refers to `void`. This is the reason why Tokay has two values to simply define nothing, which are `void` and `null`.
+Captures can also be re-assigned by following captures. This one assigns a value at the second item to the first item, and uses the first item inside of the calculation. The second item which is the assignment, exists also as item of the sequence and refers to `void`, as all assignments do. This is the reason why Tokay has two values to simply define nothing, which are `void` and `null`.
 ```tokay
-3 + 4, $3 = $3 * 2  # 14
+3 + 4, $1 = $1 * 2  # 14
 ```
-As the result of the above sequence, just one value results which is `14`, but the second item's value, `void`, has a lower severity than the calculated and assigned first value. This is the magic with sequences that you will soon figure out in detail, especially when tokens from streams are accessed and processed, or your programs work on extracted information from the input.
+As the result of the above sequence, just one value results which is `14`, but the second item's value, `void`, has a lower severity than the calculated and assigned first value. This is the magic with sequences that you will soon figure out in detail, especially when tokens from streams are accessed and processed, or your programs work on extracted information from the input, and the automatic abstract syntax tree construction occurs.
 
-As the last example, we shortly show how sequence items can also be named and can be accessed by their name.
+As the last example, we shortly show how sequence items can also be named and accessed by a more meaningful name than just the index.
 ```tokay
 hello => "Hello", $hello = 3 * $hello  # (hello => "HelloHelloHello")
 ```
 Here, the first item, which is referenced by the capture variable `$hello` is repeated 3 times as the second item.
-This might be quite annoying, but the result of this sequence is a dict. A dict is a hash-table where values can be referenced by a key.
-
+It might be quite annoying, but the result of this sequence is a dict as shown in the comment. A dict is a hash-table where values can be referenced by a key.
 
 ## Newlines
 
-In Tokay, newlines and line-breaks respectively (`\n`) are meaningful. They separate sequences from each other, as you will learn in the next section.
+In Tokay, newlines (line-breaks, `\n` respectively) are meaningful. They separate sequences from each other, as you will learn in the next section.
 
 ```tokay
 "1st" "sequence"
@@ -101,7 +115,7 @@ In Tokay, newlines and line-breaks respectively (`\n`) are meaningful. They sepa
 "3rd" "sequence"
 ```
 
-Instead of a newline, a semicolon (`;`) can also be used, which has the same meaning. A single-line sequence can be split into multiple lines by preceding a backslash in front of the line-break.
+Instead of a newline, a semicolon (`;`) can also be used, which has the same meaning. A single-line sequence can be split into multiple lines by preceding a backslash (`\`) in front of the line-break.
 
 ```tokay
 "1st" \
@@ -112,7 +126,67 @@ The first and second example are literally the same.
 
 ## Blocks
 
+Sequences are organized in blocks. Blocks may contain several sequences, which are executed in order of their definition. Every sequence inside of a block is separated by a newline.
 
+- **Blocks** are defined by curly braces `{...}` and introduce a new alternation of sequences. Sequences in a block are executed in order until an item of a sequence or the sequence itself *accepts* or *rejects* the block.
+- **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
+*rejects* the entire block.
+- **Items** are
+  - expressions like `1 + 2` or `++i * 3`
+  - assignments like `x = 42` or `s += "duh"`
+  - calls to `'tokens'`, `functions()` or `Parselets`
+  - control flow instructions like `if x == 42 "yes" else "no"`
+  - and even further `{ blocks }`
+
+```tokay
+{  # a block...
+    # ... has sequences
+    item¹ item² item³ ... # made of items.
+
+    item¹ {  # an item of a sequence can be a block again
+        item¹ item² ... # which contains further sequences with items
+    }
+
+    {}  # this empty block is the only item of the third sequence of the outer block
+}
+```
+
+Blocks implicitly return the value of the last sequence being executed. Thus,
+
+```tokay
+a = {
+    1 + 2
+    4
+}
+```
+assigns `4` to `a`, but calculates `3` in between.
+
+## Functions
+
+A function is introduced by an at-character (`@`), where a parameter list might optionally follow. The function's body is obgligatory, but can also exist of just a sequence or an item. Functions are normally assigned to constants, but can also be assigned to variables, with some loose of flexibility, but opening other features.
+
+```tokay
+f : @x = 1 {  # f is a function
+    print("I am a function, x is " + x)
+}
+f  # calls f, because it has no required parameters!
+f()  # same as just f
+f(5)  # calls f with x=5
+f(x=10)  # calls f with x=10
+```
+
+Tokay functions that consume input are called *parselets*. It depends on the function's body if its either considered to be a function or a parselet. Generally, when talking about parselets in Tokay, both function and real parselets are meant as shorthand.
+
+```tokay
+P : @x = 1 {  # P is a parselet as it uses a consuming token
+    Word print("I am a parselet, x is " + x)
+}
+
+P  # calls P, because it has no required parameters!
+P()  # same as just P
+P(5)  # calls P with x=5
+P(x=10)  # calls P with x=10
+```
 
 # Values
 
@@ -188,102 +262,37 @@ From the object types presented above, tokens and functions have the special pro
 
 For variables and constants, special naming rules apply which allow Tokay to determine a symbol type based on its identifier only.
 
-1. Consumable, callable constants must start with an upper-case letter **A-Z** or an underscore **_**.
-2. Non-consumable or not callable constants and any variable must start with a lower-case letter **a-z**.
-
-Some examples for clarification:
-```tokay
-Pi : 3.1415  # Error: Cannot assign non-consumable to consumable constant.
-pi : 3.1415  # Ok
-
-Cident : [A-Za-z_] [A-Za-z0-9_]* $0
-cident : Cident  # Error: Cannot assign consumable to non-consumable constant.
-NewCident : Cident  # Ok
-
-faculty : @n {
-    if n <= 0 return 1
-    n * faculty(n - 1)
-}
-Faculty : faculty  # Error: Cannot assign non-consumable to consumable constant.
-
-IsOkay : @{
-    Integer if $1 > 100 && $1 < 1000 accept
-}  # Ok, because the function is a parselet as it calls Cident
-```
+*todo: This section is a stub. More examples and detailed explanations needed here.*
 
 ## Scopes
 
 Variables and constants are organized in scopes.
 
-1. A scope is any `{block}` level, and the global scope.
-2. Constants can be defined in any scope. They can be re-defined by other constants in the same or in subsequent blocks. Constants being re-defined in a subsequent block are valid until the block ends, afterwards the previous constant will be valid again.
-3. Variables are only distinguished between a global and a local scope of a parselet block. Unknown variables used in a parselet block are considered as local variables.
+1. A scope is any block, and the global scope.
+2. Constants can be defined in any block. They can be re-defined by other constants in the same or in subsequent blocks. Constants being re-defined in a subsequent block are valid until the block ends, afterwards the previous constant will be valid again.
+3. Variables are only distinguished between global and local scope of a parselet. Unknown variables used in a parselet block are considered as local variables.
 
 Here's some commented code for clarification:
 ```tokay
-x = 10  # global scope variable
-y : 2000  # global scope constant
-z = 30  # global scope variable
+x = 10  # global scope variable x
+y : 2000  # global scope constant y
+z = 30  # global scope variable z
 
 # entering new scope of function f
 f : @x {  # x is overridden as local variable
-    y : 1000  # local constant y overrides global constant y temporarily
+    y : 1000  # local constant y overrides global constant y temporarily in this block
     z += y + x # adds local constant y and local value of x to global value of z
 }
 
 f(42)
 
-# back in global scope, y is 2000 again, z is 1072 now.
+# back in global scope, x is still 10, y is 2000 again, z is 1072 now.
+x y z
 ```
-
-
-## Blocks, sequences and items
-
-Tokay code is structured by *items* inside of *sequences* that are ordered in *blocks*.
-
-- **Blocks** are defined by curly braces `{...}` and introduce a new alternation of sequences. Sequences in a block are executed in order until an item of a sequence or the sequence itself *accepts* or *rejects* the block.
-- **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
-*rejects* the entire block.
-- **Items** are
-  - expressions like `1 + 2` or `++i * 3`
-  - assignments like `x = 42` or `s += "duh"`
-  - calls to `'tokens'`, `functions()` or `Parselets`
-  - control flow instructions like `if x == 42 "yes" else "no"`
-  - and even further `{ blocks }`
-
-These are the three basic elements in Tokay which complement among each other. The code structuring is shown in the pseudo-code example below.
-
-```tokay
-{  # a block...
-    # ... has sequences
-    item¹ item² item³ ... # made of items.
-
-    item¹ {  # an item of a sequence can be a block again
-        item¹ item² ... # which contains further sequences with items
-    }
-
-    {}  # this empty block is the only item of the third sequence of the outer block
-}
-```
-
-Every item can either accept or reject its sequence. This is essential for the stream-directed approach Tokay follows. When a token, say `'Hello'`, from the example in the preface, doesn't match the current input, any following items are not being executed. The token is being accepted when the input is exactly `Hello`, otherwise it is rejected, and a possible next alternative can be tried.
-
-This does apply to any item in tokay, but there are different priorities for either accept or reject, which will be discussed in detail for related items later.
-
 
 ## Captures
 
-Items in sequences are captured during execution. They are temporarily pushed and hold onto a stack, for later access. It is possible to access previously captured items using *capture variables*. Capture variables start with a dollar-sign `$` followed either by an index, an aliased name or any Tokay expression which evalutes to an index or an aliased named dynamically.
-
-Here are some examples:
-```tokay
-Name print($1)
-the_name => Name print($the_name)
-```
-
-First line matches a `Name` (which is any word consisting of alphanumeric letters) and the following `print`-call accesses this name by its index, starting at `$1` for the first item. `$0` does also exists, but in sequences with multiple tokens, it holds the entire text matched from beginning of the sequences to the end. `$0` and `$1` would return exactly the same result in this case.
-
-The second line uses an alias `the_name` for the result of `Name`. Afterwards, the capture can be accessed either via `$1` by index, or by `$the_name` as alias.
+Items in sequences are captured during execution. They are temporarily pushed and hold onto a stack, for later access. It is possible to access previously captured items using *capture variables*. Capture variables start with a dollar-sign (`$`) followed either by an index, an aliased name or any Tokay expression which evalutes to an index or an aliased named dynamically.
 
 Tokay also allows to assign values to captures. This makes it possible to directly use captures like any other variable inside of the sequence and any subsequent blocks that belong to the sequence.
 
@@ -303,3 +312,15 @@ Name {
 $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 ("Mercury", "Venus (neighbour)", "Home", "Mars (neighbour)", "Jupiter")
 ```
+
+*todo: This section is a stub. More examples and detailed explanations needed here.*
+
+# Built-ins
+
+## Parselets
+
+todo
+
+## Functions
+
+todo
