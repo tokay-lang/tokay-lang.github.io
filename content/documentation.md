@@ -5,7 +5,7 @@ weight = 2
 
 # Preface
 
-Tokay programs are expressed and executed differently as in common programmming languages like Python or Rust. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
+Tokay programs are expressed and executed differently as in common programmming languages like Rust or Python. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
 
 The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of the solar system.
 
@@ -39,7 +39,7 @@ hash = "# this is a string"  # this is also a comment.
 In Tokay, the following keywords are reserved words for control structures and special behaviors.
 
 ```tokay
-accept begin else end expect false if not null peek reject repeat return true void
+accept begin else end expect false for if in loop next not null peek push reject repeat return true void
 ```
 This list is currently incomplete, as Tokay is under heavy development. For example, there might be one `loop`-keyword but also variants of `for` and `while`, which currently is under consideration.
 
@@ -315,12 +315,32 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 
 *todo: This section is a stub. More examples and detailed explanations needed here.*
 
+# Tokens
+
+## Matching strings
+
+## Character-classes
+
+## Modifiers
+
+## Built-ins
+
+# Parselets
+
+## begin, end
+
+## push, next
+
+## accept, reject
+
+## repeat
+
+# Control structures
+
+## if...else
+
+## for
+
+## loop
+
 # Built-ins
-
-## Parselets
-
-todo
-
-## Functions
-
-todo
