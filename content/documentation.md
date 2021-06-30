@@ -423,13 +423,48 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 ("Mercury", "Venus (neighbour)", "Home", "Mars (neighbour)", "Jupiter")
 ```
 
-*todo: This section is a stub. More examples and detailed explanations needed here.*
+## Automatic value construction
+
+todo
 
 # Tokens
 
-## Matching strings
+Tokens are one of Tokays fundamental building blocks regarding input processing.
 
-## Character-classes
+## Matches
+
+To match specific strings of characters from the input, like keywords, the match and touch token-type is used. Touch was yet mostly used in our examples, but match is also useful, depending on use-case.
+
+```tokay
+'Touch'  # match string in the input and discard
+''Match''  # match string in the input and take
+```
+
+The only difference between the two types is, that a match has a higher severity than a touch, and will be recognized within automatic value construction.
+Both type of matches can be referred by capture variables, therefore
+
+```tokay
+'Match' $1
+```
+is the same result like a direct match.
+
+Check out the following one-liner when executed on the input `1+2-3+4`, it will return `(1, "+", (2, (3, "+", 4)))`. The matches on the plus (`''+''`) is taken into the result, the touch on minus (`'-'`) are discarded.
+```tokay
+E : { E ''+'' E ; E '-' E; Integer }; E
+```
+
+## Characters
+
+Character tokens are expressed as character-classes known from regular expressions. It is possible to either define single characters or ranges.
+
+```tokay
+[a]           # just "a"
+[az]          # either "a" or "z"
+[abc]         # "a", "b" or "c"
+[a-c]         # "a", "b" or "c" also
+[a-zA-Z0-9_]  # All ASCII digit or letter
+[^0-9]        # Any character except ASCII digits
+```
 
 ## Modifiers
 
