@@ -294,6 +294,116 @@ x y z
 
 Items in sequences are captured during execution. They are temporarily pushed and hold onto a stack, for later access. It is possible to access previously captured items using *capture variables*. Capture variables start with a dollar-sign (`$`) followed either by an index, an aliased name or any Tokay expression which evalutes to an index or an aliased named dynamically.
 
+Given the expression
+```tokay
+first => Word  _  second => Word  _  third => Word
+```
+executed on the input
+```
+Safe the planet
+```
+the sequence and input can be broken down into the following components.
+<table>
+    <tr>
+        <td class="title">
+            Capture
+        </td>
+        <td>
+            $1
+        </td>
+        <td>
+            $2
+        </td>
+        <td>
+            $3
+        </td>
+        <td>
+            $4
+        </td>
+        <td>
+            $5
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Alias
+        </td>
+        <td>
+            $first
+        </td>
+        <td></td>
+        <td>
+            $second
+        </td>
+        <td></td>
+        <td>
+            $third
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Sequence
+        </td>
+        <td>
+            first => Word
+        </td>
+        <td>
+            _
+        </td>
+        <td>
+            second => Word
+        </td>
+        <td>
+            _
+        </td>
+        <td>
+            third => Word
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Input
+        </td>
+        <td>
+            "Safe"
+        </td>
+        <td>
+            " "
+        </td>
+        <td>
+            "the"
+        </td>
+        <td>
+            " "
+        </td>
+        <td>
+            "Planet"
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            $0 contains
+        </td>
+        <td>
+            "Safe"
+        </td>
+        <td>
+            "Safe "
+        </td>
+        <td>
+            "Safe the"
+        </td>
+        <td>
+            "Safe the "
+        </td>
+        <td>
+            "Safe the planet"
+        </td>
+    </tr>
+</table>
+
+As you can see, `$0` always contains the input matched so far from the start of the capture.
+
 Tokay also allows to assign values to captures. This makes it possible to directly use captures like any other variable inside of the sequence and any subsequent blocks that belong to the sequence.
 
 ```tokay
@@ -322,6 +432,8 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 ## Character-classes
 
 ## Modifiers
+
+## Whitespace
 
 ## Built-ins
 

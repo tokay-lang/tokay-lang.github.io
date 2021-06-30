@@ -41,3 +41,19 @@ h2, .subtitle-text {
   font-weight: 400;
   letter-spacing: 0.1px;
 }
+
+table {
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-spacing: 0;
+  border: 1px solid #383838;
+
+  td {
+    padding: 5px;
+    vertical-align: top;
+
+    &.title {
+      font-weight: bold;
+    }
+  }
+}
