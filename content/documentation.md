@@ -5,7 +5,7 @@ weight = 2
 
 # Preface
 
-Tokay programs are expressed and executed differently as in common programmming languages like Rust or Python. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
+Tokay programs are expressed and executed differently as common programmming languages like Rust or Python. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
 
 The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of the solar system.
 
@@ -188,6 +188,180 @@ P(5)  # calls P with x=5
 P(x=10)  # calls P with x=10
 ```
 
+## Operators
+
+Tokay implements the following operators for use in expressions. The operators are ordered by precedence, operators in the same row share the same precedence.
+
+<table>
+    <thead>
+        <tr class="title">
+            <th>
+                Operator
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Associativity
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>= += -= *= /=</td>
+            <td>Assignment, combined operation-assignment</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>||</td>
+            <td>Logical or</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>&&</td>
+            <td>Logical and</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>== != < <= >= ></td>
+            <td>Equal, unequal, Comparison</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>+ -</td>
+            <td>Add, subtract</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>* /</td>
+            <td>Multiply, divide</td>
+            <td>left</td>
+        </tr>
+        <tr>
+            <td>- !</td>
+            <td>Negate, not</td>
+            <td>right</td>
+        </tr>
+        <tr>
+            <td>- !</td>
+            <td>Negate, not</td>
+            <td>right</td>
+        </tr>
+        <tr>
+            <td>++ --</td>
+            <td>Increment, decrement</td>
+            <td>right</td>
+        </tr>
+        <tr>
+            <td>() [] .</td>
+            <td>Grouping, subscript, attribute</td>
+            <td>left</td>
+        </tr>
+    </tbody>
+</table>
+
+Operators produce different results depending on the data-types of their operands. For example, `3 * 10` multiplies, where `3 * "test"` creates a new string repeating "test" 3 times. Try out the results of different operands in a Tokay REPL for clarification.
+
+Some operators might be separated by whitespace or grouping for clarification. For example, the plus-operator (`+`) can
+
+## Modifiers
+
+Tokay allows to use the following modifiers for calls to tokens and parselets. Modifiers are used to describe repetitions or optional occurences of tokens.
+
+<table>
+    <thead>
+        <tr class="title">
+            <th>
+                Modifier
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Examples
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>+</td>
+            <td>Positive repetition (one or many)</td>
+            <td>'t'+, P(n=3)+</td>
+        </tr>
+        <tr>
+            <td>?</td>
+            <td>Optional (one or none)</td>
+            <td>'t'?, P(n=3)?</td>
+        </tr>
+        <tr>
+            <td>*</td>
+            <td>Kleene star (none or many)</td>
+            <td>'t'*, P(n=3)*</td>
+        </tr>
+    </tbody>
+</table>
+
+You might have recognized that the operators `+` and `*` are used as operators for add and multiply as well. To clarify meaning, all modifiers stick to the token they belong to, and no whitespace is accepted between them. Modifiers are only allowed on tokens and parselet calls, and nowhere else (as it is not useful).
+
+Here are some examples for clarification:
+```
+'t' * 3    # match 't' and repeat the result 3 times
+'t'* * 3   # match 't' one or multiple times and repeat the result 3 times
+'t' * * 3  # syntax error
+```
+
+## Escape sequences
+
+Escape sequences can be used inside strings, match/touch tokens and character-classes to encode any unicode character. They are introduced with a backslash. Escape-sequences should be used to simplify the source code and its readability, but any unicode character can also be directly expressed.
+
+<table>
+    <thead>
+        <tr class="title">
+            <th>
+                Sequence
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Examples
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>\a \b \f \n \r \t \v</td>
+            <td>Bell (alert), backspace, formfeed, new line, carriage return, horizontal tab, vertical tab, </td>
+            <td>"\a\b\f\n\r\t\v"</td>
+        </tr>
+        <tr>
+            <td>\' \" \\</td>
+            <td>Quotation marks, backslash</td>
+            <td>"\'\"\\"  # '"\</td>
+        </tr>
+        <tr>
+            <td>\OOO</td>
+            <td>ASCII character in octal notation, (O = octal digit)</td>
+            <td>"\100"  # @</td>
+        </tr>
+        <tr>
+            <td>\xHH</td>
+            <td>ASCII character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>"\xCA"  # Ê</td>
+        </tr>
+        <tr>
+            <td>\uHHHH</td>
+            <td>16-Bit Unicode character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>"\u20ac"  # €</td>
+        </tr>
+        <tr>
+            <td>\UHHHHHHHH</td>
+            <td>32-Bit Unicode character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>"\U0001F98E"  # 🦎</td>
+        </tr>
+    </tbody>
+</table>
+
 # Values
 
 Let's discuss the meaning of values in Tokay next. Values are used everywhere, even when its not directly obvious. Generally speaking, everything in Tokay is some kind of value or part of a value.
@@ -195,12 +369,12 @@ Let's discuss the meaning of values in Tokay next. Values are used everywhere, e
 *Atomic* values are one of the following.
 
 ```tokay
-void                        # values to representing just nothing
-null                        # values representing a defined "set to null"
-true false                  # boolean values
-42 -23                      # signed 64-bit integers
-3.1415 -1.337               # signed 64-bit floats
-"Glasflügel Libelle 201b"   # unicode strings
+void           # values to representing just nothing
+null           # values representing a defined "set to null"
+true false     # boolean values
+42 -23         # signed 64-bit integers
+3.1415 -1.337  # signed 64-bit floats
+"Tokay 🦎"      # unicode strings
 ```
 
 Values can also be one of the following *objects*.
@@ -429,9 +603,9 @@ todo
 
 # Tokens
 
-Tokens are one of Tokays fundamental building blocks regarding input processing.
+Tokens are Tokays fundamental building blocks regarding input processing. Tokay implements first-level tokens which direcly consume input, but usages of parselets, which are functions consuming input, are considered as second-level tokens, and are at least tokens as well.
 
-## Matches
+## Touch & match
 
 To match specific strings of characters from the input, like keywords, the match and touch token-type is used. Touch was yet mostly used in our examples, but match is also useful, depending on use-case.
 
@@ -453,7 +627,7 @@ Check out the following one-liner when executed on the input `1+2-3+4`, it will 
 E : { E ''+'' E ; E '-' E; Integer }; E
 ```
 
-## Characters
+## Character-classes
 
 Character tokens are expressed as character-classes known from regular expressions. It is possible to either define single characters or ranges.
 
@@ -466,7 +640,11 @@ Character tokens are expressed as character-classes known from regular expressio
 [^0-9]        # Any character except ASCII digits
 ```
 
-## Modifiers
+## Predictivity
+
+Beyond the token operators (`+` `?` `*`) already presented in the syntax section, Tokay provides the operators `peek` and `not` on tokens.
+
+## Expectation
 
 ## Whitespace
 

@@ -48,9 +48,10 @@ table {
   border-spacing: 0;
   border: 1px solid #383838;
 
-  td {
+  td, th {
     padding: 5px;
     vertical-align: top;
+    text-align: left;
 
     &.title {
       font-weight: bold;
