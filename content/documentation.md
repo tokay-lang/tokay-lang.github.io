@@ -169,9 +169,10 @@ A function is introduced by an at-character (`@`), where a parameter list might 
 f : @x = 1 {  # f is a function
     print("I am a function, x is " + x)
 }
-f  # calls f, because it has no required parameters!
-f()  # same as just f
-f(5)  # calls f with x=5
+
+f        # calls f, because it has no required parameters!
+f()      # same as just f
+f(5)     # calls f with x=5
 f(x=10)  # calls f with x=10
 ```
 
@@ -182,9 +183,9 @@ P : @x = 1 {  # P is a parselet as it uses a consuming token
     Word print("I am a parselet, x is " + x)
 }
 
-P  # calls P, because it has no required parameters!
-P()  # same as just P
-P(5)  # calls P with x=5
+P        # calls P, because it has no required parameters!
+P()      # same as just P
+P(5)     # calls P with x=5
 P(x=10)  # calls P with x=10
 ```
 
@@ -304,7 +305,7 @@ Tokay allows to use the following modifiers for calls to tokens and parselets. M
 You might have recognized that the operators `+` and `*` are used as operators for add and multiply as well. To clarify meaning, all modifiers stick to the token they belong to, and no whitespace is accepted between them. Modifiers are only allowed on tokens and parselet calls, and nowhere else (as it is not useful).
 
 Here are some examples for clarification:
-```
+```tokay
 't' * 3    # match 't' and repeat the result 3 times
 't'* * 3   # match 't' one or multiple times and repeat the result 3 times
 't' * * 3  # syntax error
@@ -474,7 +475,7 @@ first => Word  _  second => Word  _  third => Word
 ```
 executed on the input
 ```
-Safe the planet
+Save the planet
 ```
 the sequence and input can be broken down into the following components.
 <table>
@@ -539,7 +540,7 @@ the sequence and input can be broken down into the following components.
             Input
         </td>
         <td>
-            "Safe"
+            "Save"
         </td>
         <td>
             " "
@@ -559,19 +560,19 @@ the sequence and input can be broken down into the following components.
             $0 contains
         </td>
         <td>
-            "Safe"
+            "Save"
         </td>
         <td>
-            "Safe "
+            "Save "
         </td>
         <td>
-            "Safe the"
+            "Save the"
         </td>
         <td>
-            "Safe the "
+            "Save the "
         </td>
         <td>
-            "Safe the planet"
+            "Save the planet"
         </td>
     </tr>
 </table>
@@ -610,7 +611,7 @@ Tokens are Tokays fundamental building blocks regarding input processing. Tokay 
 To match specific strings of characters from the input, like keywords, the match and touch token-type is used. Touch was yet mostly used in our examples, but match is also useful, depending on use-case.
 
 ```tokay
-'Touch'  # match string in the input and discard
+'Touch'    # match string in the input and discard
 ''Match''  # match string in the input and take
 ```
 

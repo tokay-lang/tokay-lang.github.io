@@ -13,11 +13,11 @@ a {
   text-decoration: none;
 }
 
-ul {
+ul, ol {
   margin-top: 0.5rem;
 }
 
-ul > li {
+ul > li, ol > li {
   padding: 0.3rem 0;
 }
 
