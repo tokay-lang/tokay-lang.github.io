@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+    <title>{% block title %}Tokay programming language{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% include "_variables.html" %}
     <link href="//fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
 
 <body>
     {% block header %}
-
     <header class="pos-absolute">
         {{ macros::render_header() }}
     </header>
@@ -97,7 +96,7 @@
     {% block footer %}
     <footer>
         <small class="subtext">
-            © 2021 by <a href="https://phorward.dev">Phorward Software Technologies, Jan Max Meyer</a><br>
+            © 2021 by <a href="https://phorward.dev">Jan Max Meyer (Phorward Software Technologies)</a><br>
             Tokay is free software under the MIT license.
         </small>
     </footer>

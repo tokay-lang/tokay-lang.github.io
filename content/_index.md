@@ -30,4 +30,8 @@ Tokay's design goals are
 
 # Audience
 
-Tokay is not intended to be a general purpose programming language, nor a replacement for awk. Its audience are developers, dev-ops, data-analysts, administrators and computer enthusiasts who are just looking for a time-saving, quick to use and easy to learn language and toolchain for ad-hoc parsing and data extraction, which can just be fired up on the command-line, in shell scripts or embedded into other processes. If you like awk, you should take a look into Tokay as well.
+Tokay is not intended to be a general purpose programming language, nor a replacement for awk.
+
+Its intended audience are developers, dev-ops, data-analysts, administrators and any computer enthusiasts who are looking for a time-saving, quick-to-use and easy to learn language and toolchain for ad-hoc parsing and data extraction, which can just be fired up on the command-line, in shell scripts or embedded into other processes.
+
+If you like awk and sed, you should take a look into Tokay as well.

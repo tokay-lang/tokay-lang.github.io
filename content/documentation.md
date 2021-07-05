@@ -600,7 +600,7 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 
 ## Automatic value construction
 
-todo
+**coming soon**
 
 # Tokens
 
@@ -647,26 +647,44 @@ Beyond the token operators (`+` `?` `*`) already presented in the syntax section
 
 ## Expectation
 
+**coming soon**
+
 ## Whitespace
 
-## Built-ins
+**coming soon**
 
 # Parselets
 
 ## begin, end
 
+**coming soon**
+
 ## push, next
+
+**coming soon**
 
 ## accept, reject
 
+**coming soon**
+
 ## repeat
+
+**coming soon**
 
 # Control structures
 
 ## if...else
 
+**coming soon**
+
 ## for
+
+**coming soon**
 
 ## loop
 
+**coming soon**
+
 # Built-ins
+
+**coming soon**
