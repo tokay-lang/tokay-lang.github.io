@@ -7,7 +7,7 @@ sort_by = "weight"
 
 Tokay is a programming language designed for ad-hoc parsing. It is inspired by [awk](https://en.wikipedia.org/wiki/AWK), but follows its own philosophy and design principles. It might also be useful as a general purpose scripting language, but mainly focuses on processing textual input and work on trees with information extracted from this input.
 
-The language was designed to quickly create solutions in text processing problems, which can be just simple pattern matching but even bigger things. Therefore Tokay provides both a language for simple one-liners but also facilites to create programs like code-analysis and refactoring tools, including interpreters or compilers. For example, Tokay's own language parser is implemented in Tokay itself.
+The language was designed to quickly create solutions in text processing problems, which can be just simple pattern matching but even major things. Therefore Tokay provides both a language for simple one-liners but also facilites to create programs like code-analysis and refactoring tools, including interpreters or compilers. For example, Tokay's own language parser is implemented in Tokay itself.
 
 Tokay is a very young project and gains much potential. Volunteers are welcome!
 
@@ -26,7 +26,7 @@ Tokay's design goals are
 - *) Import system to create modularized programs
 - *) Embedded interoperability with other programs
 
-*) Coming soon.
+*) Planned feature, but coming soon.
 
 # Audience
 

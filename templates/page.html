@@ -10,6 +10,8 @@
 {% endblock header %}
 
 {% block content %}
-<div class="heading-text">{{ page.description }}</div>
+{% if page.description %}
+    <div class="heading-text">{{ page.description }}</div>
+{% endif %}
 {{ page.content | safe }}
 {% endblock content %}

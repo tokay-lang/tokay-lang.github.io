@@ -1,4 +1,4 @@
-# tokay.dev / tokay.github.io
+# tokay.dev / tokay-lang.github.io
 
 This repository contains the source code for the landing page and documentation for the [Tokay programming language](https://tokay.dev).
 

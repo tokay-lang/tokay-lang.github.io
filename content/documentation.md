@@ -39,7 +39,9 @@ hash = "# this is a string"  # this is also a comment.
 In Tokay, the following keywords are reserved words for control structures and special behaviors.
 
 ```tokay
-accept begin else end expect false for if in loop next not null peek push reject repeat return true void
+accept begin else end expect false for
+if in loop next not null peek push reject
+repeat return true void
 ```
 This list is currently incomplete, as Tokay is under heavy development. For example, there might be one `loop`-keyword but also variants of `for` and `while`, which currently is under consideration.
 
@@ -130,7 +132,6 @@ Sequences are organized in blocks. Blocks may contain several sequences, which a
 
 - **Blocks** are defined by curly braces `{...}` and introduce a new alternation of sequences. Sequences in a block are executed in order until an item of a sequence or the sequence itself *accepts* or *rejects* the block.
 - **Sequences** are lines in a block, delimited by either the end of the line, a semicolon `;` or the blocks closing brace `}`. They are made of items.
-*rejects* the entire block.
 - **Items** are
   - expressions like `1 + 2` or `++i * 3`
   - assignments like `x = 42` or `s += "duh"`
@@ -166,7 +167,8 @@ assigns `4` to `a`, but calculates `3` in between.
 A function is introduced by an at-character (`@`), where a parameter list might optionally follow. The function's body is obgligatory, but can also exist of just a sequence or an item. Functions are normally assigned to constants, but can also be assigned to variables, with some loose of flexibility, but opening other features.
 
 ```tokay
-f : @x = 1 {  # f is a function
+# f is a function
+f : @x = 1 {
     print("I am a function, x is " + x)
 }
 
@@ -179,7 +181,8 @@ f(x=10)  # calls f with x=10
 Tokay functions that consume input are called *parselets*. It depends on the function's body if its either considered to be a function or a parselet. Generally, when talking about parselets in Tokay, both function and real parselets are meant as shorthand.
 
 ```tokay
-P : @x = 1 {  # P is a parselet as it uses a consuming token
+# P is a parselet, as it uses a consuming token
+P : @x = 1 {
     Word print("I am a parselet, x is " + x)
 }
 
@@ -341,23 +344,23 @@ Escape sequences can be used inside strings, match/touch tokens and character-cl
             <td>"\'\"\\"  # '"\</td>
         </tr>
         <tr>
-            <td>\OOO</td>
-            <td>ASCII character in octal notation, (O = octal digit)</td>
+            <td>\ooo</td>
+            <td>ASCII character in octal notation</td>
             <td>"\100"  # @</td>
         </tr>
         <tr>
-            <td>\xHH</td>
-            <td>ASCII character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>\xhh</td>
+            <td>ASCII character in hexadecimal notation</td>
             <td>"\xCA"  # Ê</td>
         </tr>
         <tr>
-            <td>\uHHHH</td>
-            <td>16-Bit Unicode character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>\uhhhh</td>
+            <td>16-Bit Unicode character in hexadecimal notation</td>
             <td>"\u20ac"  # €</td>
         </tr>
         <tr>
-            <td>\UHHHHHHHH</td>
-            <td>32-Bit Unicode character in hexadecimal notation (H = hexadecimal digit)</td>
+            <td>\Uhhhhhhhh</td>
+            <td>32-Bit Unicode character in hexadecimal notation</td>
             <td>"\U0001F98E"  # 🦎</td>
         </tr>
     </tbody>
@@ -375,7 +378,7 @@ null           # values representing a defined "set to null"
 true false     # boolean values
 42 -23         # signed 64-bit integers
 3.1415 -1.337  # signed 64-bit floats
-"Tokay 🦎"      # unicode strings
+"Tokay 🦎"     # unicode strings
 ```
 
 Values can also be one of the following *objects*.
@@ -600,7 +603,7 @@ $ tokay planets2.tok -- "Mercury Venus Earth Mars Jupiter"
 
 ## Automatic value construction
 
-**coming soon**
+*coming soon*
 
 # Tokens
 
@@ -647,44 +650,44 @@ Beyond the token operators (`+` `?` `*`) already presented in the syntax section
 
 ## Expectation
 
-**coming soon**
+*coming soon*
 
 ## Whitespace
 
-**coming soon**
+*coming soon*
 
 # Parselets
 
 ## begin, end
 
-**coming soon**
+*coming soon*
 
 ## push, next
 
-**coming soon**
+*coming soon*
 
 ## accept, reject
 
-**coming soon**
+*coming soon*
 
 ## repeat
 
-**coming soon**
+*coming soon*
 
 # Control structures
 
 ## if...else
 
-**coming soon**
+*coming soon*
 
 ## for
 
-**coming soon**
+*coming soon*
 
 ## loop
 
-**coming soon**
+*coming soon*
 
 # Built-ins
 
-**coming soon**
+*coming soon*
