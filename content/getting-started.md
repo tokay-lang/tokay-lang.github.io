@@ -7,12 +7,15 @@ weight = 1
 
 Currently, Tokay is in a very early project state. Therefore you have to built it from source, using the [Rust](https://www.rust-lang.org/) programming language and its build-tool `cargo`.
 
-Once you got Rust installed, clone, compile and run [Tokay](https://github.com/phorward/tokay) using
+Once you got Rust installed, install [Tokay](https://github.com/phorward/tokay) by
 
 ```shell
-$ git clone https://github.com/phorward/tokay.git
-$ cd tokay
-$ cargo run
+$ cargo install tokay
+```
+
+Once done, you should run the Tokay REPL with
+```
+$ tokay
 Tokay 0.3.0
 >>> print("Hello Tokay")
 Hello Tokay
@@ -25,22 +28,22 @@ You can exit the Tokay REPL with `Ctrl+C`.
 
 Invoking the `tokay` command without any arguments starts the REPL (read-eval-print-loop). This allows to enter expressions or even full programs interactively with a direct result.
 
-In case you compile and run Tokay from source on your own, just run `cargo run --` with any desired parameters attached as shown below.
-
 ```shell
 # Start a repl
-$ tokay  # cargo run --
+$ tokay
 
 # Start a repl working on an input stream from file.txt
-$ tokay -- file.txt  # cargo run -- -- file.txt
+$ tokay -- file.txt
 
 # Start a repl working on the input string "save all the whales"
-$ tokay -- "save all the whales"  # cargo run -- -- "save all the whales"
+$ tokay -- "save all the whales"
 Tokay 0.3.0
 >>> Word
 ("save", "all", "the", "whales")
 >>>
 ```
+
+In case you compile and run Tokay from source on your own, just run `cargo run --` with any desired parameters attached.
 
 Next runs the Tokay program from the file *program.tok*:
 ```shell
