@@ -36,14 +36,13 @@ hash = "# this is a string"  # this is also a comment.
 
 ## Reserved words
 
-In Tokay, the following keywords are reserved words for control structures and special behaviors.
+In Tokay, the following keywords are reserved words for control structures, values and special operators.
 
 ```tokay
 accept begin else end expect false for
 if in loop next not null peek push reject
 repeat return true void
 ```
-This list is currently incomplete, as Tokay is under heavy development. For example, there might be one `loop`-keyword but also variants of `for` and `while`, which currently is under consideration.
 
 ## Identifiers
 
@@ -247,11 +246,6 @@ Tokay implements the following operators for use in expressions. The operators a
             <td>right</td>
         </tr>
         <tr>
-            <td>- !</td>
-            <td>Negate, not</td>
-            <td>right</td>
-        </tr>
-        <tr>
             <td>++ --</td>
             <td>Increment, decrement</td>
             <td>right</td>
@@ -266,7 +260,7 @@ Tokay implements the following operators for use in expressions. The operators a
 
 Operators produce different results depending on the data-types of their operands. For example, `3 * 10` multiplies, where `3 * "test"` creates a new string repeating "test" 3 times. Try out the results of different operands in a Tokay REPL for clarification.
 
-Some operators might be separated by whitespace or grouping for clarification. For example, the plus-operator (`+`) can
+Some operators might be separated by whitespace or grouping for clarification. For example, the plus-operator (`+`) also has a different meaning when used on consumables, which is discussed next.
 
 ## Modifiers
 
@@ -676,9 +670,25 @@ Beyond the token operators (`+` `?` `*`) already presented in the syntax section
 
 # Control structures
 
+In comparison to many other languages, control structures in Tokay are part of expressions. They always return a value, which defaults to `void` when no other value is explicitly returned.
+
 ## if...else
 
-*coming soon*
+The `if...else`-construct implements conditional branching depending on the result of an expression. The `else` part is optional, and can be omitted.
+
+```tokay
+if sense == 42 && axis == 23.5 {
+    print("Well, this is fine!")
+}
+else {
+    print("That's quite bad.")
+}
+
+# if can be part of an expression
+Word "Hello " + if $1 == "World" "Earth" else $1
+```
+
+`if...else` constructs working on static expressions are optimized away during compile-time.
 
 ## for
 

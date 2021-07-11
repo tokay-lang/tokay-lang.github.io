@@ -7,14 +7,14 @@ weight = 1
 
 Currently, Tokay is in a very early project state. Therefore you have to built it from source, using the [Rust](https://www.rust-lang.org/) programming language and its build-tool `cargo`.
 
-Once you got Rust installed, install [Tokay](https://github.com/phorward/tokay) by
+Once you got Rust installed, install [Tokay](https://crates.io/crates/tokay) by
 
 ```shell
 $ cargo install tokay
 ```
 
 Once done, you should run the Tokay REPL with
-```
+```shell
 $ tokay
 Tokay 0.3.0
 >>> print("Hello Tokay")
