@@ -674,7 +674,8 @@ In comparison to many other languages, control structures in Tokay are part of e
 
 ## if...else
 
-The `if...else`-construct implements conditional branching depending on the result of an expression. The `else` part is optional, and can be omitted.
+The `if...else`-construct implements conditional branching depending on the result of an expression.<br>
+The `else` part is optional, and can be omitted.
 
 ```tokay
 if sense == 42 && axis == 23.5 {
@@ -683,6 +684,20 @@ if sense == 42 && axis == 23.5 {
 else {
     print("That's quite bad.")
 }
+```
+
+As stated before, all control structures are part of Tokays expression syntax. Above example can easily by turned into
+
+```tokay
+print(
+    if sense == 42 && axis == 23.5
+        "Well, this is fine!"
+    else
+        "That's quite bad."
+)
+```
+
+```tokay
 
 # if can be part of an expression
 Word "Hello " + if $1 == "World" "Earth" else $1
@@ -690,14 +705,103 @@ Word "Hello " + if $1 == "World" "Earth" else $1
 
 `if...else` constructs working on static expressions are optimized away during compile-time.
 
-## for
-
-*coming soon*
-
 ## loop
 
-*coming soon*
+The `loop`-keyword is used to create loops, either with an aborting conditions on top or without any condition.
+
+```tokay
+# Countdown
+count = 10
+loop count >= 0 print(
+    if --count == 3
+        "Ignition"
+    else if count < 0
+        "Liftoff"
+    else
+        count
+)
+```
+
+A loop can be aborted everytime using the `break`-statement.<br>
+The `continue`-statement restarts the loop at the beginning, but a present abort-condition will be re-checked again.
+
+```tokay
+count = 10
+loop {
+    count = count - 1
+    if count == 3 {
+        print("Ignition")
+        continue
+    }
+
+    print(count)
+    if count == 0 {
+        print("Liftoff")
+        break
+    }
+}
+```
+
+A loop without any aborting condition loops forever.
+
+```tokay
+loop print("Forever!")
+```
+
+## for
+
+The `for`-keyword introduces a special form of loop that syntacically glues the parts *initialization*, *abort condition* and *iteration* together into a separate syntactic element.
+
+```
+for count = 10; count >= 0; count-- {
+    print(i)
+}
+```
 
 # Built-ins
 
-*coming soon*
+## Tokens
+
+The following tokens are built into Tokay and can be used immediatelly. Programs can override their constants on-demand.
+
+<table>
+    <thead>
+        <tr class="title">
+            <th>
+                Token
+            </th>
+            <th>
+                Token+
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Alphabetic</td><td>Alphabetics</td><td>All Unicode characters having the Alphabetic property</td></tr>
+        <tr><td>Alphanumeric</td><td>Alphanumerics</td><td>The union of Alphabetic and Numeric</td></tr>
+        <tr><td>Any / .</td><td>-</td><td>Any character, except EOF</td></tr>
+        <tr><td>Ascii</td><td>Asciis</td><td>All characters within the ASCII range.</td></tr>
+        <tr><td>AsciiAlphabetic</td><td>AsciiAlphabetics</td><td>All ASCII alphabetic characters <code>[A-Za-z]</code></td></tr>
+        <tr><td>AsciiAlphanumeric</td><td>AsciiAlphanumerics</td><td>ASCII alphanumeric characters <code>[0-9A-Za-z]</code></td></tr>
+        <tr><td>AsciiControl</td><td>AsciiControls</td><td>All ASCII control characters <code>[\x00-\x1F\x7f]</code>. SPACE is not a control character.</td></tr>
+        <tr><td>AsciiDigit</td><td>AsciiDigits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
+        <tr><td>AsciiGraphic</td><td>AsciiGraphics</td><td>ASCII graphic character <code>[!-~]</code></td></tr>
+        <tr><td>AsciiHexdigit</td><td>AsciiHexdigits</td><td>ASCII hex digits <code>[0-9A-Fa-f]</code></td></tr>
+        <tr><td>AsciiLowercase</td><td>AsciiLowercases</td><td>All ASCII lowercase characters <code>[a-z]</code></td></tr>
+        <tr><td>AsciiPunctuation</td><td>AsciiPunctuations</td><td>All ASCII punctuation characters <code>[-!"#$%&'()*+,./:;<=>?@[\\\]^_`{|}~]</code></td></tr>
+        <tr><td>AsciiUppercase</td><td>AsciiUppercases</td><td>All ASCII uppercase characters <code>[A-Z]</code></td></tr>
+        <tr><td>AsciiWhitespace</td><td>AsciiWhitespaces</td><td>All characters defining ASCII whitespace <code>[ \t\n\f\r]</code></td></tr>
+        <tr><td>Control</td><td>Controls</td><td>All Unicode characters in the controls category</td></tr>
+        <tr><td>Digit</td><td>Digits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
+        <tr><td>EOF</td><td>-</td><td>Matches End-Of-File.</td></tr>
+        <tr><td>Lowercase</td><td>Lowercases</td><td>All Unicode characters having the Lowercase property</td></tr>
+        <tr><td>Numeric</td><td>Numerics</td><td>All Unicode characters in the numbers category</td></tr>
+        <tr><td>Uppercase</td><td>Uppercases</td><td>All Unicode characters having the Uppercase property</td></tr>
+        <tr><td>Whitespace</td><td>Whitespaces</td><td>All Unicode characters having the White_Space property</td></tr>
+        <tr><td>Void</td><td>-</td><td>The empty token, matching nothing, but consumes</td></tr>
+    </tbody>
+</table>
+
+The respective properties of the built-in character classes is described in Chapter 4 (Character Properties) of the [Unicode Standard](https://www.unicode.org/versions/latest/) and specified in the [Unicode Character Database](https://www.unicode.org/reports/tr44) in [DerivedCoreProperties.txt](https://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt).
