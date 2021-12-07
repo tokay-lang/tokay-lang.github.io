@@ -5,11 +5,13 @@ sort_by = "weight"
 
 # About
 
-Tokay is a programming language designed for ad-hoc parsing. It is inspired by [awk](https://en.wikipedia.org/wiki/AWK), but follows its own philosophy and design principles. It might also be useful as a general purpose scripting language, but mainly focuses on processing textual input and work on trees with information extracted from this input.
+Tokay is a programming language designed for ad-hoc parsing.
 
-The language was designed to quickly create solutions in text processing problems, which can be just simple pattern matching but even major things. Therefore Tokay provides both a language for simple one-liners but also facilites to create programs like code-analysis and refactoring tools, including interpreters or compilers. For example, Tokay's own language parser is implemented in Tokay itself.
+Tokay is a language made to quickly create solutions in text processing problems. This can either be just simple extractions from any data, but also parsing the entire data, and turning it into a structured parse tree or abstract syntax tree for further tasks.
 
-Tokay is a very young project and gains much potential. Volunteers are welcome!
+Therefore, Tokay provides both a language for simple one-liners, but also features to create tools for code-analysis, refactoring, interpreters, compilers, transpilers or even entire domain specific languages. Even Tokay's own language parser is implemented with Tokay itself.
+
+Tokay is inspired by [awk](https://en.wikipedia.org/wiki/AWK), but follows its own philosophy and design principles. It might also serve as a general purpose scripting language, but it mainly focuses on processing textual input and work on trees with information extracted from this input.
 
 # Features
 
@@ -22,11 +24,9 @@ Tokay's design goals are
 - Implements a memoizing packrat parsing algorithm internally
 - Robust due to its implementation in only safe [Rust](https://rust-lang.org)
 - Enabling awk-style one-liners in combination with other tools
-- *) Generic functions and parselets
-- *) Import system to create modularized programs
-- *) Embedded interoperability with other programs
-
-*) Planned feature, but coming soon.
+- Generic functions and parselets (*coming soon)
+- Import system to create modularized programs (*coming soon)
+- Embedded interoperability with other programs (*coming soon)
 
 # Audience
 

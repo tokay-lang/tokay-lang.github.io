@@ -7,7 +7,7 @@ weight = 2
 
 Tokay programs are expressed and executed differently as common programmming languages like Rust or Python. Therefore, Tokay is not "yet another programming language". It was designed with the goal to let its programs directly operate on input streams that are either read from files, strings, piped commands or any other device emitting characters.
 
-The most obvious example to show how Tokay executes its programs is this little matcher to greet the inner planets of the solar system.
+The most obvious example to show how Tokay executes its programs is this little matcher. It recognizes either "Hello Mercury", "Hello Venus" or "Hello Earth" from a text stream. Any other input is automatically skipped.
 
 ```tokay
 'Hello' _ {
@@ -17,9 +17,9 @@ The most obvious example to show how Tokay executes its programs is this little 
 }
 ```
 
-In comparison to other programming languages, there's no explicit branching, substring extraction or reading from input required, as this is directly built into the language and its entire structuring.
+In comparison to a general purpose programming languages, there's no explicit branching, substring extraction or reading from input required, as this is directly built into the language and its entire structuring.
 
-If you're familiar with the [awk](https://en.wikipedia.org/wiki/AWK) language, you might find a similarity in above example to awk's `PATTERN { action }` syntax. This is exactly where the intention behind Tokay starts, but not by thinking of a line-based execution working on fields, but a token-based approach working on anything matched from the input, including recursive structures that can be expressed by a grammar.
+If you're familiar with [awk](https://en.wikipedia.org/wiki/AWK), you might find a similarity in above example to awk's `PATTERN { action }` syntax. This approach is recursive in Tokay, so that the action-part again is a further pattern area, or just action code. This is exactly where the intention behind Tokay starts, but not by thinking of a line-based execution working on fields, but a token-based approach working on anything matched from the input, including recursive structures that can be expressed by a grammar.
 
 # Syntax
 
@@ -39,7 +39,7 @@ hash = "# this is a string"  # this is also a comment.
 In Tokay, the following keywords are reserved words for control structures, values and special operators.
 
 ```tokay
-accept begin else end expect false for
+accept begin else end exit expect false for
 if in loop next not null peek push reject
 repeat return true void
 ```
@@ -627,22 +627,84 @@ E : { E ''+'' E ; E '-' E; Integer }; E
 
 ## Character-classes
 
-Character tokens are expressed as character-classes known from regular expressions. It is possible to either define single characters or ranges.
+Character tokens are expressed as character-classes known from regular expressions. They are encapsulated in brackets `[...]` and allow for a specification of ranges or single characters.
+
+- Single Characters are either specified by a Unicode-character or an [escape sequence](#escape-sequences).
+- Ranges are delimited by a dash (`-`). If a Max-Min-Range is specified, it is automatically converted into a Min-Max-Range, so `[z-a]` becomes `[a-z]`.
+- If a dash (`-`) should be part of the character-class, it should be specified first or last.
+- If a circumflex (`^`) is specified as first character in the character-class, the character-class will be inverted, so `[^a-z]` matches everything except `a` to `z`.
+
 
 ```tokay
 [a]           # just "a"
 [az]          # either "a" or "z"
 [abc]         # "a", "b" or "c"
 [a-c]         # "a", "b" or "c" also
-[a-zA-Z0-9_]  # All ASCII digit or letter
+[a-zA-Z0-9_]  # All ASCII digit or letter and underscore
 [^0-9]        # Any character except ASCII digits
+[-+*/]        # Mathematical base operators (minus-dash first!)
 ```
+
+## Built-ins
+
+The following tokens are built into Tokay and can be used immediatelly. Programs can override these constants on-demand.
+
+<table>
+    <thead>
+        <tr class="title">
+            <th>
+                Token
+            </th>
+            <th>
+                Token+
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Alphabetic</td><td>Alphabetics</td><td>All Unicode characters having the Alphabetic property</td></tr>
+        <tr><td>Alphanumeric</td><td>Alphanumerics</td><td>The union of Alphabetic and Numeric</td></tr>
+        <tr><td>Any / .</td><td>-</td><td>Any character, except EOF</td></tr>
+        <tr><td>Ascii</td><td>Asciis</td><td>All characters within the ASCII range.</td></tr>
+        <tr><td>AsciiAlphabetic</td><td>AsciiAlphabetics</td><td>All ASCII alphabetic characters <code>[A-Za-z]</code></td></tr>
+        <tr><td>AsciiAlphanumeric</td><td>AsciiAlphanumerics</td><td>ASCII alphanumeric characters <code>[0-9A-Za-z]</code></td></tr>
+        <tr><td>AsciiControl</td><td>AsciiControls</td><td>All ASCII control characters <code>[\x00-\x1F\x7f]</code>. SPACE is not a control character.</td></tr>
+        <tr><td>AsciiDigit</td><td>AsciiDigits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
+        <tr><td>AsciiGraphic</td><td>AsciiGraphics</td><td>ASCII graphic character <code>[!-~]</code></td></tr>
+        <tr><td>AsciiHexdigit</td><td>AsciiHexdigits</td><td>ASCII hex digits <code>[0-9A-Fa-f]</code></td></tr>
+        <tr><td>AsciiLowercase</td><td>AsciiLowercases</td><td>All ASCII lowercase characters <code>[a-z]</code></td></tr>
+        <tr><td>AsciiPunctuation</td><td>AsciiPunctuations</td><td>All ASCII punctuation characters <code>[-!"#$%&'()*+,./:;<=>?@[\\\]^_`{|}~]</code></td></tr>
+        <tr><td>AsciiUppercase</td><td>AsciiUppercases</td><td>All ASCII uppercase characters <code>[A-Z]</code></td></tr>
+        <tr><td>AsciiWhitespace</td><td>AsciiWhitespaces</td><td>All characters defining ASCII whitespace <code>[ \t\n\f\r]</code></td></tr>
+        <tr><td>Control</td><td>Controls</td><td>All Unicode characters in the controls category</td></tr>
+        <tr><td>Digit</td><td>Digits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
+        <tr><td>EOF</td><td>-</td><td>Matches End-Of-File.</td></tr>
+        <tr><td>Lowercase</td><td>Lowercases</td><td>All Unicode characters having the Lowercase property</td></tr>
+        <tr><td>Numeric</td><td>Numerics</td><td>All Unicode characters in the numbers category</td></tr>
+        <tr><td>Uppercase</td><td>Uppercases</td><td>All Unicode characters having the Uppercase property</td></tr>
+        <tr><td>Whitespace</td><td>Whitespaces</td><td>All Unicode characters having the White_Space property</td></tr>
+        <tr><td>Void</td><td>-</td><td>The empty token, which consuming nothing, but consumes!</td></tr>
+    </tbody>
+</table>
+
+The respective properties of the built-in character classes is described in Chapter 4 (Character Properties) of the [Unicode Standard](https://www.unicode.org/versions/latest/) and specified in the [Unicode Character Database](https://www.unicode.org/reports/tr44) in [DerivedCoreProperties.txt](https://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt).
+
+
+## Modifiers
+
+
 
 ## Predictivity
 
-Beyond the token operators (`+` `?` `*`) already presented in the syntax section, Tokay provides the operators `peek` and `not` on tokens.
+Beyond the token modifiers (`+` `?` `*`) already presented in the syntax section, Tokay provides the operators `peek` and `not` on tokens.
 
-## Expectation
+## peek
+
+*coming soon*
+
+## not
 
 *coming soon*
 
@@ -697,8 +759,9 @@ print(
 )
 ```
 
-```tokay
+or directly used inside of an expression.
 
+```tokay
 # if can be part of an expression
 Word "Hello " + if $1 == "World" "Earth" else $1
 ```
@@ -757,51 +820,3 @@ for count = 10; count >= 0; count-- {
     print(i)
 }
 ```
-
-# Built-ins
-
-## Tokens
-
-The following tokens are built into Tokay and can be used immediatelly. Programs can override their constants on-demand.
-
-<table>
-    <thead>
-        <tr class="title">
-            <th>
-                Token
-            </th>
-            <th>
-                Token+
-            </th>
-            <th>
-                Description
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>Alphabetic</td><td>Alphabetics</td><td>All Unicode characters having the Alphabetic property</td></tr>
-        <tr><td>Alphanumeric</td><td>Alphanumerics</td><td>The union of Alphabetic and Numeric</td></tr>
-        <tr><td>Any / .</td><td>-</td><td>Any character, except EOF</td></tr>
-        <tr><td>Ascii</td><td>Asciis</td><td>All characters within the ASCII range.</td></tr>
-        <tr><td>AsciiAlphabetic</td><td>AsciiAlphabetics</td><td>All ASCII alphabetic characters <code>[A-Za-z]</code></td></tr>
-        <tr><td>AsciiAlphanumeric</td><td>AsciiAlphanumerics</td><td>ASCII alphanumeric characters <code>[0-9A-Za-z]</code></td></tr>
-        <tr><td>AsciiControl</td><td>AsciiControls</td><td>All ASCII control characters <code>[\x00-\x1F\x7f]</code>. SPACE is not a control character.</td></tr>
-        <tr><td>AsciiDigit</td><td>AsciiDigits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
-        <tr><td>AsciiGraphic</td><td>AsciiGraphics</td><td>ASCII graphic character <code>[!-~]</code></td></tr>
-        <tr><td>AsciiHexdigit</td><td>AsciiHexdigits</td><td>ASCII hex digits <code>[0-9A-Fa-f]</code></td></tr>
-        <tr><td>AsciiLowercase</td><td>AsciiLowercases</td><td>All ASCII lowercase characters <code>[a-z]</code></td></tr>
-        <tr><td>AsciiPunctuation</td><td>AsciiPunctuations</td><td>All ASCII punctuation characters <code>[-!"#$%&'()*+,./:;<=>?@[\\\]^_`{|}~]</code></td></tr>
-        <tr><td>AsciiUppercase</td><td>AsciiUppercases</td><td>All ASCII uppercase characters <code>[A-Z]</code></td></tr>
-        <tr><td>AsciiWhitespace</td><td>AsciiWhitespaces</td><td>All characters defining ASCII whitespace <code>[ \t\n\f\r]</code></td></tr>
-        <tr><td>Control</td><td>Controls</td><td>All Unicode characters in the controls category</td></tr>
-        <tr><td>Digit</td><td>Digits</td><td>ASCII decimal digits <code>[0-9]</code></td></tr>
-        <tr><td>EOF</td><td>-</td><td>Matches End-Of-File.</td></tr>
-        <tr><td>Lowercase</td><td>Lowercases</td><td>All Unicode characters having the Lowercase property</td></tr>
-        <tr><td>Numeric</td><td>Numerics</td><td>All Unicode characters in the numbers category</td></tr>
-        <tr><td>Uppercase</td><td>Uppercases</td><td>All Unicode characters having the Uppercase property</td></tr>
-        <tr><td>Whitespace</td><td>Whitespaces</td><td>All Unicode characters having the White_Space property</td></tr>
-        <tr><td>Void</td><td>-</td><td>The empty token, matching nothing, but consumes</td></tr>
-    </tbody>
-</table>
-
-The respective properties of the built-in character classes is described in Chapter 4 (Character Properties) of the [Unicode Standard](https://www.unicode.org/versions/latest/) and specified in the [Unicode Character Database](https://www.unicode.org/reports/tr44) in [DerivedCoreProperties.txt](https://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt).

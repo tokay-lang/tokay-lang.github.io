@@ -16,7 +16,7 @@ $ cargo install tokay
 Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.3.0
+Tokay 0.4.0
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
@@ -37,7 +37,7 @@ $ tokay -- file.txt
 
 # Start a repl working on the input string "save all the whales"
 $ tokay -- "save all the whales"
-Tokay 0.3.0
+Tokay 0.4.0
 >>> Word
 ("save", "all", "the", "whales")
 >>>

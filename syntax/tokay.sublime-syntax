@@ -64,7 +64,7 @@ contexts:
         - include: main
 
   expression:
-    - match: \b(accept|begin|else|end|expect|false|for|if|in|loop|next|not|null|peek|push|reject|repeat|return|true|void)\b
+    - match: \b(accept|begin|else|end|exit|expect|false|for|if|in|loop|next|not|null|peek|push|reject|repeat|return|true|void)\b
       scope: keyword.control.tok
     - include: block
     - include: value
