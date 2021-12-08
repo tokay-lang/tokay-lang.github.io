@@ -18,5 +18,6 @@ logo_path = "tokay-logo.svg"
 logo_name = "Tokay Programming Language"
 
 extra_menu = [
+    { title = "Documentation", link = "/tokay-docs/"},
     { title = "GitHub", link = "https://github.com/phorward/tokay"}
 ]
