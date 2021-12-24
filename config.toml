@@ -9,7 +9,7 @@ insert_anchor_links = true
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
 highlight_theme = "kronuz"
-extra_syntaxes = [
+extra_syntaxes_and_themes = [
     "syntax"
 ]
 
@@ -19,5 +19,5 @@ logo_name = "Tokay Programming Language"
 
 extra_menu = [
     { title = "Documentation", link = "/tokay-docs/"},
-    { title = "GitHub", link = "https://github.com/phorward/tokay"}
+    { title = "GitHub", link = "https://github.com/tokay-lang/tokay"}
 ]

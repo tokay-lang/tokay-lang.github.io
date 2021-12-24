@@ -1,7 +1,9 @@
 +++
 title = "Getting started"
-weight = 1
+weight = 2
 +++
+
+This is a first steps guide with information how to install and use Tokay. For further reading and all details, consult the [documentation](/tokay-docs/).
 
 # Installation
 
@@ -35,11 +37,11 @@ $ tokay
 # Start a repl working on an input stream from file.txt
 $ tokay -- file.txt
 
-# Start a repl working on the input string "save all the whales"
-$ tokay -- "save all the whales"
+# Start a repl working on the input string "gliding is fun!"
+$ tokay -- "gliding is fun!"
 Tokay 0.4.0
 >>> Word
-("save", "all", "the", "whales")
+("gliding", "is", "fun")
 >>>
 ```
 
@@ -60,13 +62,13 @@ $ tokay program.tok -- file.txt
 $ tokay program.tok -- file1.txt file2.txt file3.txt
 
 # Run a program from with files or strings as input stream
-$ tokay program.tok -- file1.txt "save all the whales" file2.txt
+$ tokay program.tok -- file1.txt "save the whales" file2.txt
 
 # Pipe input through tokay
 $ cat file.txt | tokay program.tok -- -
 ```
 
-A tokay program can also be specified directly as first parameter. This call just prints the content of the files specified:
+A Tokay program can also be specified directly as first parameter. This call just prints the content of the files specified:
 ```shell
 # Directly provide program via command-line parameter
 $ tokay '.+' -- file1.txt file2.txt file3.txt
@@ -74,15 +76,15 @@ $ tokay '.+' -- file1.txt file2.txt file3.txt
 
 # Hello $world
 
-As a first, well-known example, this is how the "Hello World"-program looks like in Tokay:
+As a first, well-known example, this is how the "Hello World"-program looks in Tokay:
 ```tokay
 print("Hello World")
 ```
-Indeed, this looks very familiar compared to other languages. But what about this version?
+Indeed, this is very familiar compared to other languages. But what about this version?
 ```tokay
 "Hello World" print($1)
 ```
-This will also print "Hello World", but here, the string "Hello World" is pushed as part of a sequence, and is then referenced by the print-function call. Values in a sequence, so called captures, are temporary variables that can be accessed and modified inside of a sequence. You'll learn more about them later.
+This will also print "Hello World", but here, the string "Hello World" is first pushed as part of a sequence, and then referenced by the print-function call. Values in a sequence, so called *captures*, are temporary variables that can be accessed and modified inside of a sequence. You'll learn more about them later.
 
 The above two programs can directly be run with an immediatelly presented result.
 With the next example, this is not the case. Note the single-quotes, rather than the double quotes used before.
@@ -130,4 +132,6 @@ begin count = 0
 end print(count + " in total")
 ```
 
-Well, you just learned to write your first programs with Tokay. Let's move on.
+Well, you just learned how to write your first programs with Tokay.
+
+Are you still interested in learning more? Then feel free to continue reading by browsing the [official documentation](/tokay-docs/).

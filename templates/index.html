@@ -50,18 +50,20 @@
                 dedicated to parsing and other text-processing tasks.
             </h3>
             <div>
-                <a class="github-button" href="https://github.com/phorward/tokay" data-size="large" data-show-count="true"
+                <a class="github-button" href="https://github.com/tokay-lang/tokay" data-size="large" data-show-count="true"
                    aria-label="Star Tokay on GitHub">Star</a>
-                <a class="github-button" href="https://github.com/phorward/tokay/fork" data-size="large"
+                <a class="github-button" href="https://github.com/tokay-lang/tokay/fork" data-size="large"
                    data-show-count="true" aria-label="Fork Tokay on GitHub">Fork</a>
             </div>
         </section>
         <img class="hero-image" style="width: 50%" src="/tokay-icon.svg">
 
+        <!--
         <div class="explore-more text"
             onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
             Explore More ⇩
         </div>
+        -->
         {% endblock hero %}
     </div>
 
@@ -71,13 +73,11 @@
         {% block toc %}
             {% if section.toc %}
                 {% set toc = section.toc %}
-            {% elif section.pages %}
-                {% set toc = section.pages %}
             {% elif page.toc %}
                 {% set toc = page.toc %}
             {% endif %}
 
-            {% if toc %}
+            {% if toc and toc|length > 1 %}
                 <div class="toc">
                     <div class="toc-sticky">
                         {% for h in toc %}
@@ -85,9 +85,8 @@
                                 <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
                             </div>
 
-                            {% set children = h.children %}
-                            {% if children %}
-                                {% for h2 in children %}
+                            {% if h and h.children %}
+                                {% for h2 in h.children %}
                                 <div class="toc-item-child">
                                     <a class="subtext" href="{{h2.permalink | safe}}"><small>- {{ h2.title }}</small></a>
                                 </div>
@@ -99,12 +98,23 @@
             {% endif %}
         {% endblock toc %}
 
-        <div class="content text">
-            {% block content %}
-                <div id="features" class="heading-text">Overview</div>
-                {{ section.content | safe }}
-            {% endblock content %}
-        </div>
+        {% if section.content %}
+            <div class="content text">
+                {% block content %}
+                    {{ section.content | safe }}
+                {% endblock content %}
+            </div>
+        {% elif page.content %}
+            <div class="content text">
+                {% if page.description %}
+                    <div class="heading-text">{{ page.description }}</div>
+                {% endif %}
+
+                {% block content %}
+                    {{ page.content | safe }}
+                {% endblock content %}
+            </div>
+        {% endif %}
 
         {% block sidebar %}
         {% endblock %}
