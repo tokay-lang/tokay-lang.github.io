@@ -1,5 +1,25 @@
+/* alfa-slab-one-regular - latin */
+@font-face {
+  font-family: 'Alfa Slab One';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('/static/fonts/alfa-slab-one-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('/static/fonts/alfa-slab-one-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* fira-sans-regular - latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('/static/fonts/fira-sans-v15-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('/static/fonts/fira-sans-v15-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 .heading-text {
-  font-family: sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 32px;
   font-weight: 600;
   padding: 10px 0 25px 0;
@@ -7,7 +27,7 @@
 }
 
 h1, .title-text {
-  font-family: sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 25px;
   font-weight: 500;
   color: var(--primary-text-color);
@@ -16,14 +36,14 @@ h1, .title-text {
 }
 
 h2, .subtitle-text {
-  font-family: sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: var(--primary-text-color);
 }
 
 .text {
-  font-family: sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 26px;
@@ -36,7 +56,7 @@ h2, .subtitle-text {
 }
 
 .subtext {
-  font-family: sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.1px;
