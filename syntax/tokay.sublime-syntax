@@ -6,10 +6,6 @@ file_extensions: [tok, tokay]
 first_line_match: "#!/usr/bin/tokay"
 scope: source.tok
 
-variables:
-  CONSTANT: '[A-Z_][A-Za-z_0-9]*'
-  VARIABLE: '[a-z][A-Za-z_0-9]*'
-
 contexts:
   main:
     - include: expression
@@ -18,37 +14,39 @@ contexts:
     - match: '\$[0-9]+'
       scope: variable.language.tok
       push: infix-operator
-    - match: '\b{{CONSTANT}}|{{VARIABLE}}\b'
+    - match: '\b[A-Z_][A-Za-z_0-9]*\b'
+      scope: constant.language.tok
+      push: infix-operator
+    - match: '\b[a-z][A-Za-z_0-9]*\b'
       scope: variable.language.tok
       push: infix-operator
 
   value:
     - match: '"'
       push:
-        - meta_scope: string.quoted.tok
+        - meta_scope: string
         - match: \\.
           scope: constant.character.escape.tok
         - match: '"'
           pop: true
     - match: "''"
       push:
-        - meta_scope: string.tok.match
+        - meta_scope: constant
         - match: \\.
           scope: constant.character.escape.tok
         - match: "''"
           pop: true
     - match: "'"
       push:
-        - meta_scope: string.tok.touch
+        - meta_scope: constant
         - match: \\.
           scope: constant.character.escape.tok
         - match: "'"
           pop: true
     - match: '\['
       push:
-        - meta_scope: string.tok.ccl
+        - meta_scope: constant
         - match: \\.
-          scope: constant.character.escape.tok
         - match: '\]'
           pop: true
     - match: '\b[0-9]+(?:\.[0-9]+)?(?:e[+-][0-9]+)?\b'
@@ -64,7 +62,7 @@ contexts:
         - include: main
 
   expression:
-    - match: \b(accept|begin|else|end|exit|expect|false|for|if|in|loop|next|not|null|peek|push|reject|repeat|return|true|void)\b
+    - match: \b(accept|begin|else|end|exit|expect|false|for|if|in|loop|next|not|null|peek|push|reject|repeat|return|true|void|Float|Ident|Int|Word)\b
       scope: keyword.control.tok
     - include: block
     - include: value
@@ -87,21 +85,21 @@ contexts:
 
   prefix-operator:
     - match: '[+-]'
-      scope: keyword.operator.arithmetic.tok
+      scope: punctuation.operator.arithmetic.tok
       set: expression
 
   infix-operator:
     - match: "[=<>!]="
-      scope: keyword.operator.comparison.tok
+      scope: punctuation.operator.comparison.tok
       set: expression
     - match: '[+\-*/]=|\+\+|--|=>|=|:'
-      scope: keyword.operator.assignment.tok
+      scope: punctuation.operator.assignment.tok
       set: expression
     - match: \|\||&&|!
-      scope: keyword.operator.boolean.tok
+      scope: punctuation.operator.boolean.tok
       set: expression
     - match: '[+\-*/]'
-      scope: keyword.operator.arithmetic.tok
+      scope: punctuation.operator.arithmetic.tok
       set: expression
     - match: '(?=[\S])'
       pop: true

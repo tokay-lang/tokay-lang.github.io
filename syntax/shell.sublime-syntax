@@ -10,17 +10,17 @@ contexts:
     - match: '(?<!\S)(#)(?!\{).*$\n?'
       scope: comment.line.tok
     - match: '^\$'
-      scope: variable.parameter.tok
+      scope: keyword.tok
     - match: '"'
       push:
-        - meta_scope: string.quoted.double.tok
+        - meta_scope: string
         - match: \\.
           scope: constant.character.escape.tok
         - match: '"'
           pop: true
     - match: "'"
       push:
-        - meta_scope: string.quoted.double.tok
+        - meta_scope: string
         - match: \\.
           scope: constant.character.escape.tok
         - match: "'"

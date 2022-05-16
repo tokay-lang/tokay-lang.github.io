@@ -7,22 +7,23 @@ weight = 1
 
 Tokay is a programming language designed for ad-hoc parsing.
 
-Tokay is a language made to quickly create solutions in text processing problems. This can either be just simple extractions from any data, but also parsing the entire data, and turning it into a structured parse tree or abstract syntax tree for further tasks.
+It is made to quickly implement solutions for text processing problems. This can either be just simple data extractions, but also parsing entire structures or parts of it, and turning information into structured parse trees or abstract syntax trees for further processing.
 
-Therefore, Tokay provides both a language for simple one-liners, but also features to create tools for code-analysis, refactoring, interpreters, compilers, transpilers or even entire domain specific languages. Even Tokay's own language parser is implemented with Tokay itself.
+Therefore, Tokay is both a tool for simple one-liners, but can also be used to implement code-analyzers, refactoring tools, interpreters, compilers or transpilers.
 
-Tokay is inspired by [awk](https://en.wikipedia.org/wiki/AWK), but follows its own philosophy and design principles. It might also serve as a general purpose scripting language, but it mainly focuses on processing textual input and work on trees with information extracted from this input.
+Tokay is inspired by [awk](https://en.wikipedia.org/wiki/AWK), but follows its own philosophy, ideas and design principles. It might be usable as a common scripting language for various problems as well, but mainly focuses on the parsing features, which are a fundamental part built into the language.
 
 # Features
 
-Tokay's design goals are
+Tokay's design highlights are
 
-- Concise and easy to learn syntax
+- Interpreted, procedural and imperative scripting language
+- Concise and easy to learn syntax and object system
 - Stream-based input processing
 - Automatic parse tree construction and synthesis
 - Left-recursive parsing structures ("parselets") supported
 - Implements a memoizing packrat parsing algorithm internally
-- Robust due to its implementation in only safe [Rust](https://rust-lang.org)
+- Robust and fast, as it is written entirely in safe [Rust](https://rust-lang.org)
 - Enabling awk-style one-liners in combination with other tools
 - Generic functions and parselets (*coming soon)
 - Import system to create modularized programs (*coming soon)

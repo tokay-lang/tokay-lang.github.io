@@ -18,7 +18,7 @@ $ cargo install tokay
 Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.4.0
+Tokay 0.5.0
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
@@ -37,15 +37,15 @@ $ tokay
 # Start a repl working on an input stream from file.txt
 $ tokay -- file.txt
 
-# Start a repl working on the input string "gliding is fun!"
-$ tokay -- "gliding is fun!"
-Tokay 0.4.0
->>> Word
-("gliding", "is", "fun")
+# Start a repl working on the input string "gliding is flying with the clouds"
+$ tokay -- "gliding is flying with the clouds"
+Tokay 0.5.0
+>>> Word(5)
+("gliding", "flying", "clouds")
 >>>
 ```
 
-In case you compile and run Tokay from source on your own, just run `cargo run --` with any desired parameters attached.
+> In case you compile and run Tokay from source, use `cargo run --` with any desired parameters here, instead of the `tokay` command.
 
 Next runs the Tokay program from the file *program.tok*:
 ```shell
@@ -62,7 +62,7 @@ $ tokay program.tok -- file.txt
 $ tokay program.tok -- file1.txt file2.txt file3.txt
 
 # Run a program from with files or strings as input stream
-$ tokay program.tok -- file1.txt "save the whales" file2.txt
+$ tokay program.tok -- file1.txt "gliding is fun" file2.txt
 
 # Pipe input through tokay
 $ cat file.txt | tokay program.tok -- -
@@ -74,64 +74,151 @@ A Tokay program can also be specified directly as first parameter. This call jus
 $ tokay '.+' -- file1.txt file2.txt file3.txt
 ```
 
-# Hello $world
+> `tokay --help` will give you an overview about further parameters and invocation.
 
-As a first, well-known example, this is how the "Hello World"-program looks in Tokay:
-```tokay
-print("Hello World")
-```
-Indeed, this is very familiar compared to other languages. But what about this version?
-```tokay
-"Hello World" print($1)
-```
-This will also print "Hello World", but here, the string "Hello World" is first pushed as part of a sequence, and then referenced by the print-function call. Values in a sequence, so called *captures*, are temporary variables that can be accessed and modified inside of a sequence. You'll learn more about them later.
+# Syntax
 
-The above two programs can directly be run with an immediatelly presented result.
-With the next example, this is not the case. Note the single-quotes, rather than the double quotes used before.
-```tokay
-'Hello World' print($1)
-```
-This version of the "Hello World" program doesn't output anything when run without further input. The reason for this is, that it requires for a token `'Hello World'` that must be matched in the input first, in exact character order. Input like "HelloWorld", "hello World" or "Hello Worl" won't be matched, but when "Hello World" is matched, it immediatelly prints "Hello World" every time a "Hello World" appears.
+Tokay programs are made of items, sequences and blocks.
 
-When above program is modified as below, and fed with a text-file as input (probably containing some "Hello World"s), it becomes much more obvious how Tokay programs are being executed.
+> The next examples are showing the REPL-prompt `>>>` with a given input and output. The output may differ when other input is provided to the tokay command.
+
+An item is, for example, an expression, a function or token call or a statement. The following are all items.
 
 ```tokay
-'Hello World' print($1)
-. print
+# Expression
+>>> 2 + 3 * 5
+17
+
+# Assignment of an expression to a variable
+>>> i = 2 + 3 * 5
+
+# Loading a variable
+>>> i
+17
+
+# Conditional if-statement
+>>> if i == 17 "yes" else "no"
+"yes"
+
+# Function call
+>>> print("hello")
+hello
+
+# Method call
+>>> "hello".upper() + i
+"HELLO17"
+
+# Token call ("hello" is read by Word(3) from the input stream)
+>>> Word(3)
+"hello"
+
+# Token call in an expression (42 is read by Int from the input stream)
+>>> Int * 3
+126
 ```
-Given the input `I say: Hello World!`, this program outputs
-```
-I
 
-s
-a
-y
-:
+Sequences are multiple items in a row. Items in a sequence can optionally be separated by commas, but this is not mandatory. Sequences are either delimited by line-break, or a semicolon (`;`).
 
-Hello World
-!
-```
-Two sequences in separate lines are being executed as two alternatives in order. If the input stream matches "Hello World", "Hello World" will be printed. Otherwise, any character (the `.`-token) is consumed and just printed.
-
-If the last sequence reading any input is not provided, it is virtually inserted by Tokay inside the main scope and just skipped, so the program behaves equally without the `. print` sequence at the bottom.
-
-Let's count the appearance of "Hello World" in an input stream:
 ```tokay
-begin count = 0
-'Hello World' count += 1
-end print(count + " in total")
-```
-Quite obvious: Every time "Hello World" appears on the input stream, a variable count is increased by 1. In the beginning, the variable is intialized to 0 inside the special `begin`-sequence. The `end`-sequence is finally executed when the input stream was entirely read, and outputs the result.
+# A sequence of items with the same weighting result in a list
+>>> 1 2 3
+(1, 2, 3)
 
-Let's improve this program to inform the user when "Hello World" is matched for a 100 times. This can easily be done using an if-expression, and the pre-increment operator like so:
+# This works also comma-separated
+>>> 1, 2, 3
+(1, 2, 3)
+
+# This is a sequence of lists (indeed, lists are sequences, too)
+>>> (1 2 3) (4 5 6)
+((1, 2, 3), (4, 5, 6))
+
+# Two sequences in one row; only last result is printed in REPL.
+>>> (1 2 3); (4 5 6)
+(4, 5, 6)
+
+# This is a simple parsing sequence, accepting  assignments like
+# "i=1" or "number = 123"
+>>> Ident _ '=' _ Int
+("number", 123)
+
+# This is a version of the same sequence constructing a dictionary
+# rather than a list
+>>> name => Ident _ '=' _ value => Int
+(name => "number", value => 123)
+```
+
+Finally, sequences are organized in blocks. The execution of a sequence is influenced by failing token matches or special keywords (like `push`, `next` or `accept`, `reject`, etc.), which either enforce to execute the next sequence, or accept or reject a parselet, which can be referred to as a function. The main-parselet is also a parselet executing the main block, where the REPL runs in.
+
+A block itself is also an item inside of a sequence of another block (or the main block). A new block is defined by `{` and `}`.
+
+The next piece of code is already a demonstration of Tokays parsing features together with a parselet and two blocks, implementing an assignment grammar for either float or integer values, and some error reporting.
+
 ```tokay
-begin count = 0
-'Hello World' if ++count == 100 {
-    print("Wow, '" + $1 + "' appeared for about a hundred times")
+# Parselet definition of Assignment (identified by the @{...}-block)
+# Match an identifier, followed by either a float or an integer;
+# Throws an error on mismatch.
+>>> Assignment : @{
+    Ident _ '=' _ {
+        Float
+        Int
+        error("Expecting a number here")
+    }
 }
-end print(count + " in total")
+
+# Given input "i = 23.5"
+>>> Assignment
+("i", 23.5)
+
+# Given input "i = 42"
+>>> Assignment
+("i", 42)
+
+# Given input "i = j"
+>>> Assignment
+Line 1, column 5: Expecting a number here
 ```
 
-Well, you just learned how to write your first programs with Tokay.
+# Parsing example
 
-Are you still interested in learning more? Then feel free to continue reading by browsing the [official documentation](/tokay-docs/).
+By design, Tokay constructs syntax trees from consumed information automatically.
+
+The next program directly implements a parser and interpreter for simple mathematical expressions, like `1 + 2 + 3` or `7 * (8 + 2) / 5`. The result of each expression is printed afterwards. Processing direct and indirect left-recursions without ending in infinite loops is one of Tokay's core features.
+
+```tokay
+_ : [ \t]+              # redefine whitespace to just tab and space
+
+Factor : @{
+    Int _               # built-in 64-bit signed integer token
+    '(' _ Expr ')' _
+}
+
+Term : @{
+    Term '*' _ Factor   $1 * $4
+    Term '/' _ Factor   $1 / $4
+    Factor
+}
+
+Expr : @{
+    Expr '+' _ Term     $1 + $4
+    Expr '-' _ Term     $1 - $4
+    Term
+}
+
+Expr _ print("= " + $1)
+```
+
+An example run of this program as provided is this:
+
+```shell
+$ tokay calc.tok
+7 * (8 + 2) / 5
+= 14
+```
+
+A parse tree like following is what's internally generated during parsing and interpretation of `7 * (8 + 2) / 5`:
+
+<img src="/expr-ast.png" title="Parse tree of the example input `7 * (8 + 2) / 5`" style="max-width: 300px; padding: 15px; margin: 0 auto;">
+
+> For more parsing examples, take a look into the [`examples/`-folder](https://github.com/tokay-lang/tokay/tree/main/examples).
+
+Well, you just learned how to write your first programs with Tokay. Are you still interested in learning more? Then feel free to continue reading by browsing the [official documentation](/tokay-docs/).
