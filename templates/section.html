@@ -1,0 +1,39 @@
+{% import "_macros.html" as macros %}
+{% extends "index.html" %}
+
+{% block title %}{{ section.title }} | {{ config.title }}{% endblock title %}
+
+{% block header %}
+    <header class="box-shadow">
+        {{ macros::render_header() }}
+    </header>
+{% endblock header %}
+
+{% block content %}
+    {% if section.description %}
+        <div class="heading-text">{{ section.title }}</div>
+    {% endif %}
+
+    {{ section.content | safe }}
+
+    {% for page in section.pages %}
+    <hr>
+    <article>
+        <h2><a href="{{ page.permalink | safe }}">{{ page.date }} - {{ page.title }}</a></h2>
+        {{ page.summary | safe }}
+        <p><small><a href="{{ page.permalink | safe }}">continue reading...</a></small></p>
+    </article>
+    {% endfor %}
+
+    {#
+    {% for page in paginator.pages %}
+    <hr>
+    <article>
+        <h2><a href="{{ page.permalink | safe }}">{{ page.date }} - {{ page.title }}</a></h2>
+        {{ page.summary | safe }}
+        <p><small><a href="{{ page.permalink | safe }}">continue reading...</a></small></p>
+    </article>
+    {% endfor %}
+    #}
+
+{% endblock content %}

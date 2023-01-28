@@ -17,7 +17,10 @@ extra_syntaxes_and_themes = [
 logo_path = "tokay-logo.svg"
 logo_name = "Tokay Programming Language"
 
-extra_menu = [
-    { title = "Documentation", link = "/tokay-docs/"},
+menu = [
+    { title = "About", link = "/about"},
+    { title = "Blog", link = "/blog"},
+    { title = "Getting started", link = "/getting-started"},
+    { title = "Documentation", link = "/tokay-docs"},
     { title = "GitHub", link = "https://github.com/tokay-lang/tokay"}
 ]

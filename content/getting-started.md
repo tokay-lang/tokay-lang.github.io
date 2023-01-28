@@ -1,6 +1,5 @@
 +++
 title = "Getting started"
-weight = 2
 +++
 
 This is a first steps guide with information how to install and use Tokay. For further reading and all details, consult the [documentation](/tokay-docs/).
@@ -18,7 +17,7 @@ $ cargo install tokay
 Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.5.0
+Tokay 0.6.0
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
@@ -39,7 +38,7 @@ $ tokay -- file.txt
 
 # Start a repl working on the input string "gliding is flying with the clouds"
 $ tokay -- "gliding is flying with the clouds"
-Tokay 0.5.0
+Tokay 0.6.0
 >>> Word(5)
 ("gliding", "flying", "clouds")
 >>>
@@ -71,7 +70,7 @@ $ cat file.txt | tokay program.tok -- -
 A Tokay program can also be specified directly as first parameter. This call just prints the content of the files specified:
 ```shell
 # Directly provide program via command-line parameter
-$ tokay '.+' -- file1.txt file2.txt file3.txt
+$ tokay 'Char+' -- file1.txt file2.txt file3.txt
 ```
 
 > `tokay --help` will give you an overview about further parameters and invocation.
@@ -105,7 +104,7 @@ An item is, for example, an expression, a function or token call or a statement.
 hello
 
 # Method call
->>> "hello".upper() + i
+>>> "hello".upper + i
 "HELLO17"
 
 # Token call ("hello" is read by Word(3) from the input stream)

@@ -1,9 +1,7 @@
 +++
 title = "About"
-weight = 1
+template = "page.html"
 +++
-
-# About
 
 Tokay is a programming language designed for ad-hoc parsing.
 

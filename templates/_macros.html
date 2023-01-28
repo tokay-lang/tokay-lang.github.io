@@ -1,5 +1,5 @@
 {% macro render_header() %}
-{% set section = get_section(path="_index.md") %}
+    {% set section = get_section(path="_index.md") %}
     <a href="{{ section.permalink }}">
         <div class="logo">
             <img src="{{ get_url(path=config.extra.logo_path) }}" alt="{{config.extra.logo_name}}">
@@ -7,13 +7,8 @@
     </a>
 
     <nav>
-        {% for page in section.pages %}
-        <a class="nav-item subtitle-text" href="{{ page.permalink }}">{{ page.title }}</a>
-        {% endfor %}
-        {% if config.extra.extra_menu %}
-            {% for menu in config.extra.extra_menu %}
+        {% for menu in config.extra.menu %}
             <a class="nav-item subtitle-text" href="{{ menu.link }}">{{ menu.title }}</a>
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
     </nav>
 {% endmacro render_header %}

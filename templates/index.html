@@ -68,15 +68,27 @@
 
     <main>
         {% block toc %}
-            {% if section.toc %}
+            {% if section %}
                 {% set toc = section.toc %}
-            {% elif page.toc %}
+
+                {% if not toc and section.components|length > 0 %}
+                    {% set toc = section.pages %}
+                {% endif %}
+            {% else %}
                 {% set toc = page.toc %}
             {% endif %}
 
             {% if toc and toc|length > 1 %}
                 <div class="toc">
                     <div class="toc-sticky">
+                        {#
+                        {% if page and page.title %}
+                            <div class="toc-item">
+                                <a class="subtext" href="{{page.permalink | safe}}">{{ page.title }}</a>
+                            </div>
+                        {% endif %}
+                        #}
+
                         {% for h in toc %}
                             <div class="toc-item">
                                 <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
@@ -95,23 +107,13 @@
             {% endif %}
         {% endblock toc %}
 
-        {% if section.content %}
-            <div class="content text">
-                {% block content %}
+        <div class="content text">
+            {% block content %}
+                {% if section.content %}
                     {{ section.content | safe }}
-                {% endblock content %}
-            </div>
-        {% elif page.content %}
-            <div class="content text">
-                {% if page.description %}
-                    <div class="heading-text">{{ page.description }}</div>
                 {% endif %}
-
-                {% block content %}
-                    {{ page.content | safe }}
-                {% endblock content %}
-            </div>
-        {% endif %}
+            {% endblock %}
+        </div>
 
         {% block sidebar %}
         {% endblock %}
@@ -120,7 +122,7 @@
     {% block footer %}
     <footer>
         <small class="subtext">
-            © 2022 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            © 2023 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
             Tokay is free software released under the MIT license.
         </small>
     </footer>
@@ -132,7 +134,7 @@
         document.querySelectorAll(".toc a").forEach((item) => {
             item.classList.remove("active");
         });
-        document.querySelector(".toc a[href$='" + pathname + "#" + heading + "']").classList.add("active");
+        document.querySelector(".toc a[href$='" + pathname + "/#" + heading + "']").classList.add("active");
     }
 
     let currentHeading = "";
