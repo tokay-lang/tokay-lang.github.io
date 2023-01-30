@@ -81,7 +81,9 @@ Tokay programs are made of items, sequences and blocks.
 
 > The next examples are showing the REPL-prompt `>>>` with a given input and output. The output may differ when other input is provided to the tokay command.
 
-An item is, for example, an expression, a function or token call or a statement. The following are all items.
+## Items
+
+An item can be an expression, a function or token call or a statement. The following are all items.
 
 ```tokay
 # Expression
@@ -116,6 +118,8 @@ hello
 126
 ```
 
+## Sequences
+
 Sequences are multiple items in a row. Items in a sequence can optionally be separated by commas, but this is not mandatory. Sequences are either delimited by line-break, or a semicolon (`;`).
 
 ```tokay
@@ -145,6 +149,8 @@ Sequences are multiple items in a row. Items in a sequence can optionally be sep
 >>> name => Ident _ '=' _ value => Int
 (name => "number", value => 123)
 ```
+
+## Blocks
 
 Finally, sequences are organized in blocks. The execution of a sequence is influenced by failing token matches or special keywords (like `push`, `next` or `accept`, `reject`, etc.), which either enforce to execute the next sequence, or accept or reject a parselet, which can be referred to as a function. The main-parselet is also a parselet executing the main block, where the REPL runs in.
 
@@ -184,10 +190,10 @@ By design, Tokay constructs syntax trees from consumed information automatically
 The next program directly implements a parser and interpreter for simple mathematical expressions, like `1 + 2 + 3` or `7 * (8 + 2) / 5`. The result of each expression is printed afterwards. Processing direct and indirect left-recursions without ending in infinite loops is one of Tokay's core features.
 
 ```tokay
-_ : [ \t]+              # redefine whitespace to just tab and space
+_ : Char< \t>+          # redefine whitespace to just tab and space
 
 Factor : @{
-    Int _               # built-in 64-bit signed integer token
+    Int _               # built-in signed integer token
     '(' _ Expr ')' _
 }
 

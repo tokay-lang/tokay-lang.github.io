@@ -19,7 +19,7 @@ logo_name = "Tokay Programming Language"
 
 menu = [
     { title = "About", link = "/about"},
-    { title = "Blog", link = "/blog"},
+    { title = "News", link = "/news"},
     { title = "Getting started", link = "/getting-started"},
     { title = "Documentation", link = "/tokay-docs"},
     { title = "GitHub", link = "https://github.com/tokay-lang/tokay"}
