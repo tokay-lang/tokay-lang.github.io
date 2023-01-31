@@ -25,7 +25,9 @@ Hello Tokay
 
 You can exit the Tokay REPL with `Ctrl+C`.
 
-# CLI usage
+> The next examples are showing the REPL-prompt `>>>` with a given input and output. The output may differ when other input is provided.
+
+# Usage
 
 Invoking the `tokay` command without any arguments starts the REPL (read-eval-print-loop). This allows to enter expressions or even full programs interactively with a direct result.
 
@@ -70,16 +72,14 @@ $ cat file.txt | tokay program.tok -- -
 A Tokay program can also be specified directly as first parameter. This call just prints the content of the files specified:
 ```shell
 # Directly provide program via command-line parameter
-$ tokay 'Char+' -- file1.txt file2.txt file3.txt
+$ tokay 'print(Char+)' -- file.txt
 ```
 
 > `tokay --help` will give you an overview about further parameters and invocation.
 
 # Syntax
 
-Tokay programs are made of items, sequences and blocks.
-
-> The next examples are showing the REPL-prompt `>>>` with a given input and output. The output may differ when other input is provided to the tokay command.
+Tokay programs are made of *items*, *sequences* and *blocks*.
 
 ## Items
 
@@ -93,21 +93,21 @@ An item can be an expression, a function or token call or a statement. The follo
 # Assignment of an expression to a variable
 >>> i = 2 + 3 * 5
 
-# Loading a variable
->>> i
-17
+# Using a variable within an expression
+>>> i + 3
+20
 
 # Conditional if-statement
 >>> if i == 17 "yes" else "no"
 "yes"
 
 # Function call
->>> print("hello")
-hello
+>>> print("hello" + i)
+hello17
 
 # Method call
->>> "hello".upper + i
-"HELLO17"
+>>> "hello".upper * 3
+"HELLOHELLOHELLO"
 
 # Token call ("hello" is read by Word(3) from the input stream)
 >>> Word(3)
