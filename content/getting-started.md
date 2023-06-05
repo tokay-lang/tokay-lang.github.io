@@ -14,10 +14,12 @@ Once you got Rust installed, install [Tokay](https://crates.io/crates/tokay) by
 $ cargo install tokay
 ```
 
+> Due to a current bug in stable Rust >= 1.68, `tokay` fails to compile with the command above. As a workaround, install the nightly toolchain first with `rustup toolchain install nightly` and afterwards install Tokay with `cargo +nightly install tokay`.
+
 Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.6.0
+Tokay 0.6.2
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
@@ -40,7 +42,7 @@ $ tokay -- file.txt
 
 # Start a repl working on the input string "gliding is flying with the clouds"
 $ tokay -- "gliding is flying with the clouds"
-Tokay 0.6.0
+Tokay 0.6.2
 >>> Word(5)
 ("gliding", "flying", "clouds")
 >>>
