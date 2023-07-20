@@ -14,12 +14,12 @@ Once you got Rust installed, install [Tokay](https://crates.io/crates/tokay) by
 $ cargo install tokay
 ```
 
-> Due to a current bug in stable Rust >= 1.68, `tokay` fails to compile with the command above. As a workaround, install the nightly toolchain first with `rustup toolchain install nightly` and afterwards install Tokay with `cargo +nightly install tokay`.
+> Due to a recent bug in stable Rust >= 1.68 and < 1.70, `tokay` fails to compile with the command above. The problem has been fixed with latest stable version 1.71 of cargo, therefore be sure you're using the latest stable version.
 
 Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.6.2
+Tokay 0.6.4
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
@@ -185,9 +185,9 @@ The next piece of code is already a demonstration of Tokays parsing features tog
 Line 1, column 5: Expecting a number here
 ```
 
-# Parsing example
+# Parsers
 
-By design, Tokay constructs syntax trees from consumed information automatically.
+By design, Tokay constructs syntax trees from consumed information automatically. It is a programming language to write parsers.
 
 The next program directly implements a parser and interpreter for simple mathematical expressions, like `1 + 2 + 3` or `7 * (8 + 2) / 5`. The result of each expression is printed afterwards. Processing direct and indirect left-recursions without ending in infinite loops is one of Tokay's core features.
 
