@@ -2,7 +2,7 @@
 {% extends "index.html" %}
 
 {% block head %}
-<script src="nav.js"></script>
+<script src="/nav.js"></script>
 {% endblock head %}
 
 {% block title %}{{ page.title }} | {{ config.title }}{% endblock title %}
@@ -14,7 +14,8 @@
 {% endblock header %}
 
 {% block content %}
-    <div class="heading-text">{{ page.title }}</div>
+    <div class="heading-text">{{ page.date }}</div>
+    <div class="title-text">{{ page.title }}</div>
 
     {{ page.content | safe }}
 {% endblock content %}
