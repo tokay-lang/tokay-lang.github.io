@@ -1,31 +1,31 @@
 +++
-title = "Getting started"
+title = "Quick start"
 +++
 
-This is a first steps guide with information how to install and use Tokay. For further reading and all details, consult the [documentation](/tokay-docs/).
+This is a quick start guide with information how to install and use Tokay.<br>
+For further reading and all details, consult the [documentation](/tokay-docs/).
 
 # Installation
 
 Currently, Tokay is in a very early project state. Therefore you have to built it from source, using the [Rust](https://www.rust-lang.org/) programming language and its build-tool `cargo`.
 
-Once you got Rust installed, install [Tokay](https://crates.io/crates/tokay) by
+Once you got Rust installed, compile and install [Tokay](https://crates.io/crates/tokay) by
 
 ```shell
 $ cargo install tokay
 ```
 
-> Due to a recent bug in stable Rust >= 1.68 and < 1.70, `tokay` fails to compile with the command above. The problem has been fixed with latest stable version 1.71 of cargo, therefore be sure you're using the latest stable version.
+Once done, you can run the Tokay REPL with
 
-Once done, you should run the Tokay REPL with
 ```shell
 $ tokay
-Tokay 0.6.4
+Tokay 0.6.6
 >>> print("Hello Tokay")
 Hello Tokay
 >>>
 ```
 
-You can exit the Tokay REPL with `Ctrl+C`.
+You can exit the Tokay REPL with `Ctrl+C` or by calling the `exit` keyword.
 
 > The next examples are showing the REPL-prompt `>>>` with a given input and output. The output may differ when other input is provided.
 
@@ -42,7 +42,7 @@ $ tokay -- file.txt
 
 # Start a repl working on the input string "gliding is flying with the clouds"
 $ tokay -- "gliding is flying with the clouds"
-Tokay 0.6.2
+Tokay 0.6.6
 >>> Word(5)
 ("gliding", "flying", "clouds")
 >>>
@@ -81,11 +81,13 @@ $ tokay 'print(Char+)' -- file.txt
 
 # Syntax
 
-Tokay programs are made of *items*, *sequences* and *blocks*.
+Tokay source code is made of *items*, *sequences* and *blocks*.
 
 ## Items
 
-An item can be an expression, a function or token call or a statement. The following are all items.
+Items are results of expressions, function calls or statements.
+
+Below, every REPL input is one item:
 
 ```tokay
 # Expression
@@ -118,43 +120,46 @@ hello17
 # Token call in an expression (42 is read by Int from the input stream)
 >>> Int * 3
 126
+
+# A list of items is also an item
+>>> 1,2,3
+(1, 2, 3)
 ```
 
 ## Sequences
 
-Sequences are multiple items in a row. Items in a sequence can optionally be separated by commas, but this is not mandatory. Sequences are either delimited by line-break, or a semicolon (`;`).
+Sequences are multiple items in a sequence. Sequences are either delimited by line-break, or a semicolon (`;`). They can be grouped to sub-sequences using parantheses `(` and `)`. A sequence either yields in an object of type `list`, or in a `dict`, depending on the elements used inside the
 
 ```tokay
 # A sequence of items with the same weighting result in a list
 >>> 1 2 3
 (1, 2, 3)
 
-# This works also comma-separated
->>> 1, 2, 3
-(1, 2, 3)
+# Sequence with a list
+>>> 4, 5  6
+((4, 5), 6)
 
-# This is a sequence of lists (indeed, lists are sequences, too)
->>> (1 2 3) (4 5 6)
-((1, 2, 3), (4, 5, 6))
+# Item with a sub-sequence
+>>> 7, (8 9)
+(7, (8, 9))
 
 # Two sequences in one row; only last result is printed in REPL.
->>> (1 2 3); (4 5 6)
-(4, 5, 6)
+>>> 10 20 30; 40 50 60
+(40, 50, 60)
 
 # This is a simple parsing sequence, accepting  assignments like
 # "i=1" or "number = 123"
 >>> Ident _ '=' _ Int
 ("number", 123)
 
-# This is a version of the same sequence constructing a dictionary
-# rather than a list
+# This is a version of the same sequence constructing a dict rather than a list
 >>> name => Ident _ '=' _ value => Int
-(name => "number", value => 123)
+(name => "n" value => 42)
 ```
 
 ## Blocks
 
-Finally, sequences are organized in blocks. The execution of a sequence is influenced by failing token matches or special keywords (like `push`, `next` or `accept`, `reject`, etc.), which either enforce to execute the next sequence, or accept or reject a parselet, which can be referred to as a function. The main-parselet is also a parselet executing the main block, where the REPL runs in.
+Finally, sequences are organized in blocks. The execution of a sequence is influenced by failing token matches or special keywords like `push`, `next`, `accept`, `reject` and more, which either enforce to execute the next sequence, or accept or reject a parselet, which can be referred to as a function. The main-parselet is also a parselet executing the main block, where the REPL runs in.
 
 A block itself is also an item inside of a sequence of another block (or the main block). A new block is defined by `{` and `}`.
 
@@ -185,9 +190,9 @@ The next piece of code is already a demonstration of Tokays parsing features tog
 Line 1, column 5: Expecting a number here
 ```
 
-# Parsers
+# Parselets
 
-By design, Tokay constructs syntax trees from consumed information automatically. It is a programming language to write parsers.
+By design, Tokay constructs syntax trees from consumed information automatically. It is a programming language to write parsers. Functions that consume input are called *parselets*. If a function consumes input can be obtained by its name: When it starts with a capital letter or an underscore, it may consume input.
 
 The next program directly implements a parser and interpreter for simple mathematical expressions, like `1 + 2 + 3` or `7 * (8 + 2) / 5`. The result of each expression is printed afterwards. Processing direct and indirect left-recursions without ending in infinite loops is one of Tokay's core features.
 
@@ -222,10 +227,43 @@ $ tokay calc.tok
 = 14
 ```
 
-A parse tree like following is what's internally generated during parsing and interpretation of `7 * (8 + 2) / 5`:
+A parse tree like visualized in the following graphic is, what's internally constructed during parsing and interpretation of `7 * (8 + 2) / 5`. As you can see, the structure of the expression and the precendeces of operators and parantheses becomes clear and well-defined.
 
-<img src="/expr-ast.png" title="Parse tree of the example input `7 * (8 + 2) / 5`" style="max-width: 300px; padding: 15px; margin: 0 auto;">
+<img src="/expr-ast.png" title="Parse tree of the example input `7 * (8 + 2) / 5`" style="max-width: 500px; padding: 15px; margin: 0 auto;">
 
 > For more parsing examples, take a look into the [`examples/`-folder](https://github.com/tokay-lang/tokay/tree/main/examples).
+
+# Control structrues
+
+Tokay provides just 3 control structures:
+
+- `if...else` for conditional branching,
+- `for...in` for running over iterators,
+- `loop` for structured loops.
+
+Inside of loops, the keyswords `break` and `continue` can be used.
+
+Control structures are part of expressions, and vice versa. Therefore, an `if`-statement, for example, can either serve as an inline-if or an if-construct.
+
+```tokay
+>>> x = 42
+>>> print(if x == 42 "sense of life" else "nothing")
+sense of life
+>>> if x == 42 print("sense of life") else print("nothing")
+sense of life
+>>> for i in range(3) print(i)
+0
+1
+2
+>>> i = 0
+>>> loop i < 3 { print(i++) }
+0
+1
+2
+>>> i = 0  loop i < 5 { print(i++) if i == 2 break "stopped" }
+0
+1
+"stopped"
+```
 
 Well, you just learned how to write your first programs with Tokay. Are you still interested in learning more? Then feel free to continue reading by browsing the [official documentation](/tokay-docs/).

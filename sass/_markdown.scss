@@ -14,6 +14,10 @@
   //background-color: white;
   color: #4a4a4a;
   font-family: monospace;
+
+  code {
+    background-color: unset;
+  }
 }
 
 .content code {
@@ -21,6 +25,7 @@
   font-weight: normal;
   //padding: 0.25em 0.5em 0.25em;
   font-family: monospace;
+  background-color: #eee;
 }
 
 .content a {
