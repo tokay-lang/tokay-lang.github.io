@@ -2,7 +2,6 @@ title = "Tokay"
 base_url = "/"
 compile_sass = true
 build_search_index = false
-insert_anchor_links = true
 
 [markdown]
 # Whether to do syntax highlighting
