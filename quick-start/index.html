@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quick start | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/quick-start/#installation">
+                                    
+                                    Installation
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/quick-start/#usage">
+                                    
+                                    Usage
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/quick-start/#syntax">
+                                    
+                                    Syntax
+                                </a>
+                            </div>
+
+                            
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/quick-start/#items"><small>- Items</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/quick-start/#sequences"><small>- Sequences</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/quick-start/#blocks"><small>- Blocks</small></a>
+                                </div>
+                                
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/quick-start/#parselets">
+                                    
+                                    Parselets
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/quick-start/#control-structrues">
+                                    
+                                    Control structrues
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text"></div>
+    <div class="title-text">Quick start</div>
+
+    <p>This is a quick start guide with information how to install and use Tokay.<br>
+For further reading and all details, consult the <a href="/tokay-docs/">documentation</a>.</p>
+<h1 id="installation">Installation</h1>
+<p>Currently, Tokay is in a very early project state. Therefore you have to built it from source, using the <a href="https://www.rust-lang.org/">Rust</a> programming language and its build-tool <code>cargo</code>.</p>
+<p>Once you got Rust installed, compile and install <a href="https://crates.io/crates/tokay">Tokay</a> by</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#cc7833;">$</span><span> cargo install tokay
+</span></code></pre>
+<p>Once done, you can run the Tokay REPL with</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#cc7833;">$</span><span> tokay
+</span><span>Tokay 0.6.6
+</span><span>&gt;&gt;&gt; print(</span><span style="color:#a5c261;">&quot;Hello Tokay&quot;</span><span>)
+</span><span>Hello Tokay
+</span><span>&gt;&gt;&gt;
+</span></code></pre>
+<p>You can exit the Tokay REPL with <code>Ctrl+C</code> or by calling the <code>exit</code> keyword.</p>
+<blockquote>
+<p>The next examples are showing the REPL-prompt <code>&gt;&gt;&gt;</code> with a given input and output. The output may differ when other input is provided.</p>
+</blockquote>
+<h1 id="usage">Usage</h1>
+<p>Invoking the <code>tokay</code> command without any arguments starts the REPL (read-eval-print-loop). This allows to enter expressions or even full programs interactively with a direct result.</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#95815e;"># Start a repl
+</span><span style="color:#cc7833;">$</span><span> tokay
+</span><span>
+</span><span style="color:#95815e;"># Start a repl working on an input stream from file.txt
+</span><span style="color:#cc7833;">$</span><span> tokay -- file.txt
+</span><span>
+</span><span style="color:#95815e;"># Start a repl working on the input string &quot;gliding is flying with the clouds&quot;
+</span><span style="color:#cc7833;">$</span><span> tokay -- </span><span style="color:#a5c261;">&quot;gliding is flying with the clouds&quot;
+</span><span>Tokay 0.6.6
+</span><span>&gt;&gt;&gt; Word(5)
+</span><span>(</span><span style="color:#a5c261;">&quot;gliding&quot;</span><span>, </span><span style="color:#a5c261;">&quot;flying&quot;</span><span>, </span><span style="color:#a5c261;">&quot;clouds&quot;</span><span>)
+</span><span>&gt;&gt;&gt;
+</span></code></pre>
+<blockquote>
+<p>In case you compile and run Tokay from source, use <code>cargo run --</code> with any desired parameters here, instead of the <code>tokay</code> command.</p>
+</blockquote>
+<p>Next runs the Tokay program from the file <em>program.tok</em>:</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#95815e;"># Run a program from a file
+</span><span style="color:#cc7833;">$</span><span> tokay program.tok
+</span></code></pre>
+<p>To directly work on files as input stream, do this as shown next. Further files can be specified and are executed on the same program sequentially. Its also possible to read from stdin using the special filename <code>-</code>.</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#95815e;"># Run a program from a file with another file as input stream
+</span><span style="color:#cc7833;">$</span><span> tokay program.tok -- file.txt
+</span><span>
+</span><span style="color:#95815e;"># Run a program from with multiple files as input stream
+</span><span style="color:#cc7833;">$</span><span> tokay program.tok -- file1.txt file2.txt file3.txt
+</span><span>
+</span><span style="color:#95815e;"># Run a program from with files or strings as input stream
+</span><span style="color:#cc7833;">$</span><span> tokay program.tok -- file1.txt </span><span style="color:#a5c261;">&quot;gliding is fun&quot;</span><span> file2.txt
+</span><span>
+</span><span style="color:#95815e;"># Pipe input through tokay
+</span><span style="color:#cc7833;">$</span><span> cat file.txt | tokay program.tok -- -
+</span></code></pre>
+<p>A Tokay program can also be specified directly as first parameter. This call just prints the content of the files specified:</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#95815e;"># Directly provide program via command-line parameter
+</span><span style="color:#cc7833;">$</span><span> tokay </span><span style="color:#a5c261;">&#39;print(Char+)&#39;</span><span> -- file.txt
+</span></code></pre>
+<blockquote>
+<p><code>tokay --help</code> will give you an overview about further parameters and invocation.</p>
+</blockquote>
+<h1 id="syntax">Syntax</h1>
+<p>Tokay source code is made of <em>items</em>, <em>sequences</em> and <em>blocks</em>.</p>
+<h2 id="items">Items</h2>
+<p>Items are results of expressions, function calls or statements.</p>
+<p>Below, every REPL input is one item:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#95815e;"># Expression
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">2 </span><span>+ </span><span style="color:#a5c261;">3</span><span> * </span><span style="color:#a5c261;">5
+</span><span style="color:#a5c261;">17
+</span><span>
+</span><span style="color:#95815e;"># Assignment of an expression to a variable
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">i </span><span>= </span><span style="color:#a5c261;">2 </span><span>+ </span><span style="color:#a5c261;">3</span><span> * </span><span style="color:#a5c261;">5
+</span><span>
+</span><span style="color:#95815e;"># Using a variable within an expression
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">i </span><span>+ </span><span style="color:#a5c261;">3
+</span><span style="color:#a5c261;">20
+</span><span>
+</span><span style="color:#95815e;"># Conditional if-statement
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">if </span><span style="color:#d0d0ff;">i </span><span>== </span><span style="color:#a5c261;">17 &quot;yes&quot; </span><span style="color:#cc7833;">else </span><span style="color:#a5c261;">&quot;no&quot;
+</span><span style="color:#a5c261;">&quot;yes&quot;
+</span><span>
+</span><span style="color:#95815e;"># Function call
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#a5c261;">&quot;hello&quot; </span><span>+ </span><span style="color:#d0d0ff;">i</span><span>)
+</span><span style="color:#d0d0ff;">hello17
+</span><span>
+</span><span style="color:#95815e;"># Method call
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">&quot;hello&quot;</span><span>.</span><span style="color:#d0d0ff;">upper </span><span>* </span><span style="color:#a5c261;">3
+</span><span style="color:#a5c261;">&quot;HELLOHELLOHELLO&quot;
+</span><span>
+</span><span style="color:#95815e;"># Token call (&quot;hello&quot; is read by Word(3) from the input stream)
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">Word</span><span>(</span><span style="color:#a5c261;">3</span><span>)
+</span><span style="color:#a5c261;">&quot;hello&quot;
+</span><span>
+</span><span style="color:#95815e;"># Token call in an expression (42 is read by Int from the input stream)
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">Int</span><span> * </span><span style="color:#a5c261;">3
+</span><span style="color:#a5c261;">126
+</span><span>
+</span><span style="color:#95815e;"># A list of items is also an item
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">1</span><span>,</span><span style="color:#a5c261;">2</span><span>,</span><span style="color:#a5c261;">3
+</span><span>(</span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#a5c261;">2</span><span>, </span><span style="color:#a5c261;">3</span><span>)
+</span></code></pre>
+<h2 id="sequences">Sequences</h2>
+<p>Sequences are multiple items in a sequence. Sequences are either delimited by line-break, or a semicolon (<code>;</code>). They can be grouped to sub-sequences using parantheses <code>(</code> and <code>)</code>. A sequence either yields in an object of type <code>list</code>, or in a <code>dict</code>, depending on the elements used inside the</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#95815e;"># A sequence of items with the same weighting result in a list
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">1 2 3
+</span><span>(</span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#a5c261;">2</span><span>, </span><span style="color:#a5c261;">3</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># Sequence with a list
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">4</span><span>, </span><span style="color:#a5c261;">5  6
+</span><span>((</span><span style="color:#a5c261;">4</span><span>, </span><span style="color:#a5c261;">5</span><span>), </span><span style="color:#a5c261;">6</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># Item with a sub-sequence
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">7</span><span>, (</span><span style="color:#a5c261;">8 9</span><span>)
+</span><span>(</span><span style="color:#a5c261;">7</span><span>, (</span><span style="color:#a5c261;">8</span><span>, </span><span style="color:#a5c261;">9</span><span>))
+</span><span>
+</span><span style="color:#95815e;"># Two sequences in one row; only last result is printed in REPL.
+</span><span>&gt;&gt;&gt; </span><span style="color:#a5c261;">10 20 30</span><span>; </span><span style="color:#a5c261;">40 50 60
+</span><span>(</span><span style="color:#a5c261;">40</span><span>, </span><span style="color:#a5c261;">50</span><span>, </span><span style="color:#a5c261;">60</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># This is a simple parsing sequence, accepting  assignments like
+</span><span style="color:#95815e;"># &quot;i=1&quot; or &quot;number = 123&quot;
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">Ident </span><span style="color:#6e9cbe;">_ </span><span>&#39;=&#39; </span><span style="color:#6e9cbe;">_ </span><span style="color:#cc7833;">Int
+</span><span>(</span><span style="color:#a5c261;">&quot;number&quot;</span><span>, </span><span style="color:#a5c261;">123</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># This is a version of the same sequence constructing a dict rather than a list
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">name </span><span>=&gt; </span><span style="color:#cc7833;">Ident </span><span style="color:#6e9cbe;">_ </span><span>&#39;=&#39; </span><span style="color:#6e9cbe;">_ </span><span style="color:#d0d0ff;">value </span><span>=&gt; </span><span style="color:#cc7833;">Int
+</span><span>(</span><span style="color:#d0d0ff;">name </span><span>=&gt; </span><span style="color:#a5c261;">&quot;n&quot; </span><span style="color:#d0d0ff;">value </span><span>=&gt; </span><span style="color:#a5c261;">42</span><span>)
+</span></code></pre>
+<h2 id="blocks">Blocks</h2>
+<p>Finally, sequences are organized in blocks. The execution of a sequence is influenced by failing token matches or special keywords like <code>push</code>, <code>next</code>, <code>accept</code>, <code>reject</code> and more, which either enforce to execute the next sequence, or accept or reject a parselet, which can be referred to as a function. The main-parselet is also a parselet executing the main block, where the REPL runs in.</p>
+<p>A block itself is also an item inside of a sequence of another block (or the main block). A new block is defined by <code>{</code> and <code>}</code>.</p>
+<p>The next piece of code is already a demonstration of Tokays parsing features together with a parselet and two blocks, implementing an assignment grammar for either float or integer values, and some error reporting.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#95815e;"># Parselet definition of Assignment (identified by the @{...}-block)
+</span><span style="color:#95815e;"># Match an identifier, followed by either a float or an integer;
+</span><span style="color:#95815e;"># Throws an error on mismatch.
+</span><span>&gt;&gt;&gt; </span><span style="color:#6e9cbe;">Assignment </span><span>: @{
+</span><span>    </span><span style="color:#cc7833;">Ident </span><span style="color:#6e9cbe;">_ </span><span>&#39;=&#39; </span><span style="color:#6e9cbe;">_ </span><span>{
+</span><span>        </span><span style="color:#cc7833;">Float
+</span><span>        </span><span style="color:#cc7833;">Int
+</span><span>        </span><span style="color:#d0d0ff;">error</span><span>(</span><span style="color:#a5c261;">&quot;Expecting a number here&quot;</span><span>)
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#95815e;"># Given input &quot;i = 23.5&quot;
+</span><span>&gt;&gt;&gt; </span><span style="color:#6e9cbe;">Assignment
+</span><span>(</span><span style="color:#a5c261;">&quot;i&quot;</span><span>, </span><span style="color:#a5c261;">23.5</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># Given input &quot;i = 42&quot;
+</span><span>&gt;&gt;&gt; </span><span style="color:#6e9cbe;">Assignment
+</span><span>(</span><span style="color:#a5c261;">&quot;i&quot;</span><span>, </span><span style="color:#a5c261;">42</span><span>)
+</span><span>
+</span><span style="color:#95815e;"># Given input &quot;i = j&quot;
+</span><span>&gt;&gt;&gt; </span><span style="color:#6e9cbe;">Assignment
+</span><span style="color:#6e9cbe;">Line </span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#d0d0ff;">column </span><span style="color:#a5c261;">5</span><span>: </span><span style="color:#6e9cbe;">Expecting </span><span style="color:#d0d0ff;">a number here
+</span></code></pre>
+<h1 id="parselets">Parselets</h1>
+<p>By design, Tokay constructs syntax trees from consumed information automatically. It is a programming language to write parsers. Functions that consume input are called <em>parselets</em>. If a function consumes input can be obtained by its name: When it starts with a capital letter or an underscore, it may consume input.</p>
+<p>The next program directly implements a parser and interpreter for simple mathematical expressions, like <code>1 + 2 + 3</code> or <code>7 * (8 + 2) / 5</code>. The result of each expression is printed afterwards. Processing direct and indirect left-recursions without ending in infinite loops is one of Tokay's core features.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#6e9cbe;">_ </span><span>: </span><span style="color:#cc7833;">Char</span><span>&lt; \</span><span style="color:#d0d0ff;">t</span><span>&gt;+          </span><span style="color:#95815e;"># redefine whitespace to just tab and space
+</span><span>
+</span><span style="color:#6e9cbe;">Factor </span><span>: @{
+</span><span>    </span><span style="color:#cc7833;">Int </span><span style="color:#6e9cbe;">_               </span><span style="color:#95815e;"># built-in signed integer token
+</span><span>    &#39;(&#39; </span><span style="color:#6e9cbe;">_ Expr </span><span>&#39;)&#39; </span><span style="color:#6e9cbe;">_
+</span><span>}
+</span><span>
+</span><span style="color:#6e9cbe;">Term </span><span>: @{
+</span><span>    </span><span style="color:#6e9cbe;">Term </span><span>&#39;*&#39; </span><span style="color:#6e9cbe;">_ Factor   </span><span style="color:#d0d0ff;">$1 </span><span>* </span><span style="color:#d0d0ff;">$4
+</span><span>    </span><span style="color:#6e9cbe;">Term </span><span>&#39;/&#39; </span><span style="color:#6e9cbe;">_ Factor   </span><span style="color:#d0d0ff;">$1 </span><span>/ </span><span style="color:#d0d0ff;">$4
+</span><span>    </span><span style="color:#6e9cbe;">Factor
+</span><span>}
+</span><span>
+</span><span style="color:#6e9cbe;">Expr </span><span>: @{
+</span><span>    </span><span style="color:#6e9cbe;">Expr </span><span>&#39;+&#39; </span><span style="color:#6e9cbe;">_ Term     </span><span style="color:#d0d0ff;">$1 </span><span>+ </span><span style="color:#d0d0ff;">$4
+</span><span>    </span><span style="color:#6e9cbe;">Expr </span><span>&#39;-&#39; </span><span style="color:#6e9cbe;">_ Term     </span><span style="color:#d0d0ff;">$1 </span><span>- </span><span style="color:#d0d0ff;">$4
+</span><span>    </span><span style="color:#6e9cbe;">Term
+</span><span>}
+</span><span>
+</span><span style="color:#6e9cbe;">Expr _ </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#a5c261;">&quot;= &quot; </span><span>+ </span><span style="color:#d0d0ff;">$1</span><span>)
+</span></code></pre>
+<p>An example run of this program as provided is this:</p>
+<pre data-lang="shell" style="background-color:#383838;color:#e6e1dc;" class="language-shell "><code class="language-shell" data-lang="shell"><span style="color:#cc7833;">$</span><span> tokay calc.tok
+</span><span>7 * (8 + 2) / 5
+</span><span>= 14
+</span></code></pre>
+<p>A parse tree like visualized in the following graphic is, what's internally constructed during parsing and interpretation of <code>7 * (8 + 2) / 5</code>. As you can see, the structure of the expression and the precendeces of operators and parantheses becomes clear and well-defined.</p>
+<img src="/expr-ast.png" title="Parse tree of the example input `7 * (8 + 2) / 5`" style="max-width: 500px; padding: 15px; margin: 0 auto;">
+<blockquote>
+<p>For more parsing examples, take a look into the <a href="https://github.com/tokay-lang/tokay/tree/main/examples"><code>examples/</code>-folder</a>.</p>
+</blockquote>
+<h1 id="control-structrues">Control structrues</h1>
+<p>Tokay provides just 3 control structures:</p>
+<ul>
+<li><code>if...else</code> for conditional branching,</li>
+<li><code>for...in</code> for running over iterators,</li>
+<li><code>loop</code> for structured loops.</li>
+</ul>
+<p>Inside of loops, the keyswords <code>break</code> and <code>continue</code> can be used.</p>
+<p>Control structures are part of expressions, and vice versa. Therefore, an <code>if</code>-statement, for example, can either serve as an inline-if or an if-construct.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">x </span><span>= </span><span style="color:#a5c261;">42
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#cc7833;">if </span><span style="color:#d0d0ff;">x </span><span>== </span><span style="color:#a5c261;">42 &quot;sense of life&quot; </span><span style="color:#cc7833;">else </span><span style="color:#a5c261;">&quot;nothing&quot;</span><span>)
+</span><span style="color:#d0d0ff;">sense of life
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">if </span><span style="color:#d0d0ff;">x </span><span>== </span><span style="color:#a5c261;">42 </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#a5c261;">&quot;sense of life&quot;</span><span>) </span><span style="color:#cc7833;">else </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#a5c261;">&quot;nothing&quot;</span><span>)
+</span><span style="color:#d0d0ff;">sense of life
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">for </span><span style="color:#d0d0ff;">i </span><span style="color:#cc7833;">in </span><span style="color:#d0d0ff;">range</span><span>(</span><span style="color:#a5c261;">3</span><span>) </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>)
+</span><span style="color:#a5c261;">0
+</span><span style="color:#a5c261;">1
+</span><span style="color:#a5c261;">2
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">i </span><span>= </span><span style="color:#a5c261;">0
+</span><span>&gt;&gt;&gt; </span><span style="color:#cc7833;">loop </span><span style="color:#d0d0ff;">i</span><span> &lt; </span><span style="color:#a5c261;">3 </span><span>{ </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>++) }
+</span><span style="color:#a5c261;">0
+</span><span style="color:#a5c261;">1
+</span><span style="color:#a5c261;">2
+</span><span>&gt;&gt;&gt; </span><span style="color:#d0d0ff;">i </span><span>= </span><span style="color:#a5c261;">0  </span><span style="color:#cc7833;">loop </span><span style="color:#d0d0ff;">i</span><span> &lt; </span><span style="color:#a5c261;">5 </span><span>{ </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>++) </span><span style="color:#cc7833;">if </span><span style="color:#d0d0ff;">i </span><span>== </span><span style="color:#a5c261;">2 </span><span style="color:#d0d0ff;">break </span><span style="color:#a5c261;">&quot;stopped&quot; </span><span>}
+</span><span style="color:#a5c261;">0
+</span><span style="color:#a5c261;">1
+</span><span style="color:#a5c261;">&quot;stopped&quot;
+</span></code></pre>
+<p>Well, you just learned how to write your first programs with Tokay. Are you still interested in learning more? Then feel free to continue reading by browsing the <a href="/tokay-docs/">official documentation</a>.</p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

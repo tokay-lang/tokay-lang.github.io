@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>v0.6.7 and Tokay Syntax Highligting for VSCode | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/feature-update/#changelog-tokay-v0-6-7">
+                                    
+                                    Changelog Tokay v0.6.7
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/feature-update/#visual-studio-code-plugin-vscode-tokay">
+                                    
+                                    Visual Studio Code Plugin (vscode-tokay)
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text">2025-04-30</div>
+    <div class="title-text">v0.6.7 and Tokay Syntax Highligting for VSCode</div>
+
+    <p>We're happy to announce a tiny feature update <strong>v0.6.7</strong>.</p>
+<p>It has some smaller fixes and neat changes included, and brings Tokay more towards the next milestone, which is a heavier duty and still needs some time.</p>
+<span id="continue-reading"></span><h1 id="changelog-tokay-v0-6-7">Changelog Tokay v0.6.7</h1>
+<p>Highlights of this feature release are</p>
+<ul>
+<li>feat: <code>list_index()</code>-function</li>
+<li>feat: <code>min()</code>, <code>max()</code>, <code>sum()</code> and <code>avg()</code> (#145)</li>
+<li>feat: Add builtin <code>str_find</code></li>
+<li>feat: Adding <code>list_clone()</code> function</li>
+<li>feat: Implement explicit <code>list_extend()</code></li>
+<li>feat: Improved <code>for...in</code> syntax</li>
+<li>feat: Improved <code>Token</code> prelude to match <code>AsciiPunctuation</code> first</li>
+<li>feat: Improving <code>dict</code> iteration &amp; access</li>
+<li>fix: <code>InlineList</code> doesn't accept multi-line list definitions</li>
+<li>fix: <code>Keyword&lt;P&gt;</code> doesn't recognize '_'</li>
+<li>fix: <code>list_iadd</code> with void (#146)</li>
+<li>fix: <code>loop</code>-syntax should allow for "loop\n{..."</li>
+<li>fix: <code>Op::MakeDict()</code> creates reversed key order</li>
+<li>fix: Complex chained comparison compile into broken code</li>
+<li>fix: Disallow variable shadowing by constants</li>
+<li>fix: Enforce use of <code>*</code>-deref for assignments</li>
+<li>fix: Generic <code>Self</code>/<code>self</code> (#142)</li>
+<li>fix: Improve <code>float</code> repr &amp; str representation</li>
+<li>fix: Improve <code>inplace/(post|pre)</code> syntax</li>
+<li>fix: object <code>iadd</code> call with standalone imutable</li>
+<li>fix+doc: docs for <code>dict()</code>, removed <code>dict_push()</code></li>
+<li>perf: Improving VM <code>Op::MakeDict</code> and <code>Op::MakeList</code></li>
+<li>refactor: <code>ImlProgram</code> compilation and finalization (#147)</li>
+<li>test: Adding test case for dict_clone()</li>
+<li>test: Split <code>dict.tok</code> testcases into separate files</li>
+</ul>
+<h1 id="visual-studio-code-plugin-vscode-tokay">Visual Studio Code Plugin (vscode-tokay)</h1>
+<p>For <strong>Visual Studio Code</strong> and <strong>OSS-Code</strong>, we're happy to announce a first release v0.0.2 of an official plugin which provides syntax highlighting for Tokay v0.6.7 programs.</p>
+<p><a href="/news/2025-04-30-vscode.jpg"><img src="/news/2025-04-30-vscode.jpg" alt="Screenshot showing Code-OSS with an actively edited Tokay program" /></a></p>
+<ul>
+<li>The plugin can be directly found and installed from the Visual Studio marketplace at <a href="https://marketplace.visualstudio.com/items?itemName=phorward.vscode-tokay">https://marketplace.visualstudio.com/items?itemName=phorward.vscode-tokay</a></li>
+<li>To install the plugin in Code-OSS, simply download the .VSX-file from <a href="https://github.com/tokay-lang/vscode-tokay">https://github.com/tokay-lang/vscode-tokay</a></li>
+</ul>
+<p>Support of any kind on this new tooling is highly appreciated!</p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/about/#features">
+                                    
+                                    Features
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/about/#audience">
+                                    
+                                    Audience
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text"></div>
+    <div class="title-text">About</div>
+
+    <p>Tokay is intended to be a programming language that can be used to quickly implement solutions for text processing problems. This can involve either simple data extractions, but also the parsing of syntactical structures or parts thereof and the conversion of information into structured parse trees or abstract syntax trees for further processing.</p>
+<p>Therefore, Tokay is not only a practical tool for simple one-liners like matchers or recognizers, but also a language that can be used to implement code analyzers, refactoring tools, interpreters, compilers or transpilers. Actually <a href="/about/src/compiler/tokay.tok">Tokay's own language parser</a> is implemented in Tokay itself.</p>
+<p>Tokay is inspired by <a href="https://en.wikipedia.org/wiki/AWK">awk</a>, has syntactic and semantic flavours of <a href="https://www.python.org/">Python</a> and <a href="https://www.rust-lang.org/">Rust</a>, but also follows its own philosophy, ideas and design principles. Thus, it isn't directly compareable to other languages or projects, and stands on its own.</p>
+<h1 id="features">Features</h1>
+<p>Tokay's design highlights are</p>
+<ul>
+<li>Interpreted, procedural and imperative scripting language</li>
+<li>Concise and easy to learn syntax and object system</li>
+<li>Stream-based input processing</li>
+<li>Automatic parse tree construction and synthesis</li>
+<li>Left-recursive parsing structures ("parselets") supported</li>
+<li>Implements a memoizing packrat parsing algorithm internally</li>
+<li>Robust and fast, as it is written entirely in safe <a href="https://rust-lang.org">Rust</a></li>
+<li>Enabling awk-style one-liners in combination with other tools</li>
+<li>Generic functions and parselets (*partly implemented)</li>
+<li>Import system to create modularized programs (*coming soon)</li>
+<li>Embedded interoperability with other programs (*coming soon)</li>
+</ul>
+<h1 id="audience">Audience</h1>
+<p>Tokay is not intended to be a general purpose programming language, nor a replacement for <code>awk</code>.</p>
+<p>Its intended audience are developers, dev-ops, data-analysts, administrators and any computer enthusiasts who are looking for a time-saving, quick-to-use and easy to learn language and toolchain for ad-hoc parsing and data extraction, which can just be fired up on the command-line, in shell scripts or embedded into other processes.</p>
+<p>If you like <code>awk</code> and <code>sed</code>, you should take a look into Tokay as well.</p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

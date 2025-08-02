@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>What&#x27;s new? | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+    
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+
+                
+                    
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6-12/">
+                                    
+                                        <strong>2025-08-02:</strong><br>
+                                    
+                                    WebAssembly, Tokay Playground and a new, faster loading parser
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/feature-update/">
+                                    
+                                        <strong>2025-04-30:</strong><br>
+                                    
+                                    v0.6.7 and Tokay Syntax Highligting for VSCode
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6-6/">
+                                    
+                                        <strong>2024-06-19:</strong><br>
+                                    
+                                    Tokay v0.6.6 released
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/plans-for-v0-7/">
+                                    
+                                        <strong>2023-06-05:</strong><br>
+                                    
+                                    Heavily working on next milestone v0.7
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6-1/">
+                                    
+                                        <strong>2023-03-05:</strong><br>
+                                    
+                                    Tokay v0.6.1 with iterators
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/website-update/">
+                                    
+                                        <strong>2023-01-31:</strong><br>
+                                    
+                                    Website update
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6/">
+                                    
+                                        <strong>2023-01-13:</strong><br>
+                                    
+                                    Release of Tokay v0.6
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    
+        <div class="heading-text">What&#x27;s new?</div>
+    
+
+    <p>Here you can find all latest news and updates on Tokay.</p>
+
+
+    
+    <hr>
+    <article>
+        <h2><a href="/news/tokay-v0-6-12/">2025-08-02 - WebAssembly, Tokay Playground and a new, faster loading parser</a></h2>
+        <p>We are pleased to announce the release of <strong>Tokay v0.6.12</strong>. There's currently much stuff going on under the hood.</p>
+<p>Here's an overview about the latest developments from Tokay v0.6.9 until v0.6.12:</p>
+<ul>
+<li>Support of <code>serde</code> for several types. This made it possible to save and load a compiled Tokay VM program into CBOR-encoded binary file, which can be directly loaded and afterwards executed. Additionally, the parser is now being loaded just once per thread, which leads in much higher execution times.</li>
+<li>The compiler's handling of global variables fed externally was implemented. Now you can assign variables via <code>tokay -vvar=42</code> directly on the command-line.</li>
+<li>Tokay now compiles safely to WebAssembly (WASM). The <a href="https://crates.io/crates/tokay-wasm"><code>tokay-wasm</code>-crate</a> compiles the latest Tokay release for WebAssembly and provides some entry points. So Tokay can now be used and installed as an NPM package in the Node/JavaScript world: <a href="https://www.npmjs.com/package/tokay">https://www.npmjs.com/package/tokay</a></li>
+<li><a href="https://github.com/tokay-lang/tokay-play">Tokay Play</a> is currently under heavy development to provide an instant Tokay development environment running natively in the browser. It shall be used to try Tokay and do some real ad-hoc parsing right away in your browser!</li>
+</ul>
+        <p><small><a href="/news/tokay-v0-6-12/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/feature-update/">2025-04-30 - v0.6.7 and Tokay Syntax Highligting for VSCode</a></h2>
+        <p>We're happy to announce a tiny feature update <strong>v0.6.7</strong>.</p>
+<p>It has some smaller fixes and neat changes included, and brings Tokay more towards the next milestone, which is a heavier duty and still needs some time.</p>
+        <p><small><a href="/news/feature-update/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/tokay-v0-6-6/">2024-06-19 - Tokay v0.6.6 released</a></h2>
+        <p>Tokay v0.6.6 is another milestone commit on the current roadmap to version 0.7, which should finalize the major feature of generics.</p>
+<p>The highlights in Tokay v0.6.6 are...</p>
+        <p><small><a href="/news/tokay-v0-6-6/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/plans-for-v0-7/">2023-06-05 - Heavily working on next milestone v0.7</a></h2>
+        <p>Right after releasing <a href="/news/tokay-v0-6">Tokay v0.6</a> as another milestone heavily focusing on internal features, development continues towards v0.7 as a huge milestone with the goals of implementing <em>generic parselets</em> and <em>iterators</em>, which where already made available with <a href="/news/tokay-v0-6-1">Tokay v0.6.1</a>.</p>
+<p>All three goals will significantly change Tokay's syntax in some ways, and establish one of the language's most powerful core features.</p>
+<p>We're hoping to release this big version during summer 2023.</p>
+        <p><small><a href="/news/plans-for-v0-7/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/tokay-v0-6-1/">2023-03-05 - Tokay v0.6.1 with iterators</a></h2>
+        <p>Tokay v0.6.1 is a "small milestone" towards Tokay v0.7 and was released now. It allows for chained comparisons and established iterators, including a new <code>for...in</code>-syntax.</p>
+        <p><small><a href="/news/tokay-v0-6-1/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/website-update/">2023-01-31 - Website update</a></h2>
+        <p>Today, an updated version of the Tokay website was launched.</p>
+        <p><small><a href="/news/website-update/">Continue reading →</a></small></p>
+    </article>
+    
+    <hr>
+    <article>
+        <h2><a href="/news/tokay-v0-6/">2023-01-13 - Release of Tokay v0.6</a></h2>
+        <p>After seven months of intense development, we're happy to announce version 0.6 of <em>Tokay</em> as another milestone towards a stable and final version of the language.</p>
+        <p><small><a href="/news/tokay-v0-6/">Continue reading →</a></small></p>
+    </article>
+    
+
+    
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

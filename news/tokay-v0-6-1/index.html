@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tokay v0.6.1 with iterators | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6-1/#chained-comparisons">
+                                    
+                                    Chained comparisons
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6-1/#iterators">
+                                    
+                                    Iterators
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text">2023-03-05</div>
+    <div class="title-text">Tokay v0.6.1 with iterators</div>
+
+    <p>Tokay v0.6.1 is a "small milestone" towards Tokay v0.7 and was released now. It allows for chained comparisons and established iterators, including a new <code>for...in</code>-syntax.</p>
+<span id="continue-reading"></span><h1 id="chained-comparisons">Chained comparisons</h1>
+<p>With this release, Tokay now support for chained comparisons, like</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#a5c261;">2</span><span> == </span><span style="color:#a5c261;">2</span><span> == </span><span style="color:#a5c261;">2  </span><span style="color:#95815e;"># true
+</span></code></pre>
+<p>which leads to <code>true</code>.<br>
+Previously, this expression turned into <code>(2 == 2) == 2</code> wich turned into <code>true == 2</code>, which turned into <code>false</code>.</p>
+<p>It works with any comparions chains of arbitrary length and operators, as code is constructed alongside. The last item of an expression will always be compared. This looses the previously supported static evaluation feature for comparisons, but makes many things feel more natural in expressions.</p>
+<h1 id="iterators">Iterators</h1>
+<p>Iterators are objects to sequentially loop over the content of other objects. Tokay v0.6.1 established iterators and the new <code>for...in</code>-syntax. The previous <code>for</code>-syntax is not supported anymore.</p>
+<p>With Tokay v0.6.0, the only way to iterate over the items of a list <code>l = (1, 2, 3)</code> is</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#cc7833;">for </span><span style="color:#d0d0ff;">i </span><span>= </span><span style="color:#a5c261;">0</span><span>; </span><span style="color:#d0d0ff;">i</span><span> &lt; </span><span style="color:#d0d0ff;">l</span><span>.</span><span style="color:#d0d0ff;">len</span><span>; </span><span style="color:#d0d0ff;">i</span><span>++ {
+</span><span>    </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>)
+</span><span>}
+</span></code></pre>
+<p>In Tokay v0.6.1, this is now turned into</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#cc7833;">for </span><span style="color:#d0d0ff;">i </span><span style="color:#cc7833;">in </span><span style="color:#d0d0ff;">l </span><span>{
+</span><span>    </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>)
+</span><span>}
+</span></code></pre>
+<p>Iterators can also be made on any object. A <code>str</code> is a special case, as it offers an indexing method:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">iter</span><span>(</span><span style="color:#cc7833;">true</span><span>))     </span><span style="color:#95815e;"># (true, )
+</span><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">iter</span><span>(</span><span style="color:#a5c261;">42.5</span><span>))     </span><span style="color:#95815e;"># (42.5, )
+</span><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">iter</span><span>(</span><span style="color:#a5c261;">&quot;Hello&quot;</span><span>))  </span><span style="color:#95815e;"># (&quot;H&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;)
+</span></code></pre>
+<p>In detail, an iterator is an object on its own, which allows to iterate forwards (or backwards) through either the content of another object, or even to produce values in a specific range. Latter is, for example, the case with</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#cc7833;">for </span><span style="color:#d0d0ff;">i </span><span style="color:#cc7833;">in </span><span style="color:#d0d0ff;">range</span><span>(</span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#a5c261;">100</span><span>, </span><span style="color:#a5c261;">2</span><span>) {
+</span><span>    </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">i</span><span>)
+</span><span>}
+</span></code></pre>
+<p>which counts from 1 to 100 in steps of 2. As the 100 is never directly reached, it will stop after printing 99.</p>
+<p>Let's use it on dicts:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">d </span><span>= (
+</span><span>  </span><span style="color:#d0d0ff;">first </span><span>=&gt; </span><span style="color:#a5c261;">1
+</span><span>  </span><span style="color:#d0d0ff;">second </span><span>=&gt; </span><span style="color:#a5c261;">2
+</span><span>  </span><span style="color:#d0d0ff;">third </span><span>=&gt; </span><span style="color:#a5c261;">3
+</span><span>)
+</span><span>
+</span><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">iter</span><span>(</span><span style="color:#d0d0ff;">d</span><span>))  </span><span style="color:#95815e;"># (1, 2, 3)
+</span><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">d</span><span>.</span><span style="color:#d0d0ff;">keys</span><span>)   </span><span style="color:#95815e;"># (&quot;first&quot;, &quot;second&quot;, &quot;third&quot;)
+</span><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">d</span><span>.</span><span style="color:#d0d0ff;">items</span><span>)  </span><span style="color:#95815e;"># ((&quot;first&quot;, 1), (&quot;second&quot;, 2), (&quot;third&quot;, 3))
+</span></code></pre>
+<p>Iterators can also be reversed in most cases:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">list</span><span>(</span><span style="color:#d0d0ff;">d</span><span>.</span><span style="color:#d0d0ff;">items</span><span>().</span><span style="color:#d0d0ff;">rev</span><span>)   </span><span style="color:#95815e;"># ((&quot;third&quot;, 3), (&quot;second&quot;, 2), (&quot;first&quot;, 1))
+</span></code></pre>
+<p>The iter API is currently provided as follows:</p>
+<ul>
+<li><code>iter()</code> creates an iterator from an object, by calling <code>object.iter()</code> or automatically a MethodIter on an object</li>
+<li><code>iter.rev()</code> reverses an iterator, if possible</li>
+<li><code>iter.next()</code> returns the iterators next element</li>
+<li><code>iter.collect()</code> collects and iterator into a list; is used by <code>list()</code> on an <code>iter</code> as well</li>
+<li><code>iter.enum()</code> creates an enumerated iterator</li>
+<li><code>iter.map()</code> creates a mapped/filtered iterator</li>
+</ul>
+<p>Iterators are generated by</p>
+<ul>
+<li><code>range()</code> creates a range counting iterator.</li>
+<li><code>iter(obj)</code> tries to iterator over an object; Returns the object itself as fallback.</li>
+<li><code>dict.keys()</code> returns an iterator over the keys of a dict; use <code>iter(dict)</code> to get an iterator over the values only.</li>
+<li><code>dict.items()</code> returns an iterator over the key-value-pairs of a dict.</li>
+</ul>
+<p>More about iterators and their usage will follow. There might also be improvements soon.</p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

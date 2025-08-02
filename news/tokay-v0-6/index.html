@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Release of Tokay v0.6 | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+                <div class="toc">
+                    <div class="toc-sticky">
+                        
+
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6/#self-contained-parser">
+                                    
+                                    Self-contained parser
+                                </a>
+                            </div>
+
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6/#object-improvements">
+                                    
+                                    Object improvements
+                                </a>
+                            </div>
+
+                            
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#dict-allows-to-use-any-immutable-tokay-value-as-keys"><small>- dict allows to use any immutable Tokay value as keys</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#enforcement-of-void-paradigm"><small>- Enforcement of void paradigm</small></a>
+                                </div>
+                                
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6/#syntax">
+                                    
+                                    Syntax
+                                </a>
+                            </div>
+
+                            
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#inline-sequences"><small>- Inline sequences</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#item-retrieval-and-assignment"><small>- Item retrieval and assignment</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#char-builtin-replaces-syntax-and"><small>- Char-builtin replaces [...]-syntax and .</small></a>
+                                </div>
+                                
+                                <div class="toc-item-child">
+                                    <a class="subtext" href="/news/tokay-v0-6/#area-syntax"><small>- Area syntax @(...)</small></a>
+                                </div>
+                                
+                            
+                        
+                            <div class="toc-item">
+                                <a class="subtext" href="/news/tokay-v0-6/#changelog">
+                                    
+                                    Changelog
+                                </a>
+                            </div>
+
+                            
+                        
+                    </div>
+                </div>
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text">2023-01-13</div>
+    <div class="title-text">Release of Tokay v0.6</div>
+
+    <p>After seven months of intense development, we're happy to announce version 0.6 of <em>Tokay</em> as another milestone towards a stable and final version of the language.</p>
+<span id="continue-reading"></span><h1 id="self-contained-parser">Self-contained parser</h1>
+<p>One of the main goals of this release was to make <code>tokay.tok</code> become Tokay's main grammar. This eliminates the maintenance of two parsers (<code>parser.rs</code> and <code>tokay.tok</code>), and clears the way for extensive future changes on the grammar and AST.</p>
+<p><code>parser.rs</code>, which is Tokay's internal parser, is now generated from a version of <code>tokay.tok</code> parsing <code>tokay.tok</code> executed by Tokay. It's quite like a lizard eating its own tail, but yeah, it is!</p>
+<p>This made the entire macro-based compiler, with a grammar expressed as Rust macro callls, obsolete.</p>
+<h1 id="object-improvements">Object improvements</h1>
+<p>Plenty of improvements went into the object system.</p>
+<h2 id="dict-allows-to-use-any-immutable-tokay-value-as-keys"><code>dict</code> allows to use any immutable Tokay value as keys</h2>
+<p>Most values in Tokay have been declared as immutable - the only mutable values are <code>dict</code> and <code>list</code>, as in this case the content of the value object is modified, rather than replaced (as it is the case with atomic values).</p>
+<p>This finally made it possible to use any Tokay value - except <code>list</code> and <code>dict</code> - as keys for <code>dict</code> as well, and not only <code>str</code>.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">d </span><span>= </span><span style="color:#d0d0ff;">dict</span><span>()
+</span><span style="color:#d0d0ff;">d</span><span>[true] = </span><span style="color:#a5c261;">1
+</span><span style="color:#d0d0ff;">d</span><span>[42] = </span><span style="color:#cc7833;">true
+</span><span style="color:#d0d0ff;">d</span><span>[23.5] = </span><span style="color:#a5c261;">&quot;yes&quot;
+</span></code></pre>
+<h2 id="enforcement-of-void-paradigm">Enforcement of <code>void</code> paradigm</h2>
+<p>The <code>void</code>-value defines nothing and can be used so. To remove an item from <code>d</code> above, just set it to void:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">d</span><span>[true] = </span><span style="color:#cc7833;">void
+</span></code></pre>
+<p>In case a defined "nothing" should be set, use <code>null</code>.</p>
+<h1 id="syntax">Syntax</h1>
+<p>The syntax was enhanced as well. Tokay v0.6 also contains a syntax draft for the upcoming generic parselets feature. The language accepts syntax, which might raise a <code>todo!()</code>-call and stop.</p>
+<h2 id="inline-sequences">Inline sequences</h2>
+<p>Within brackets <code>(...)</code>, Tokay now accepts for inline-sequences in an improved version. <code>()</code> defines the empty list.</p>
+<p>Other sequences either result in a list or in a dict, depending on their content. This behavior should be changed im Tokay v0.7, so that lists can be defined explicitly, and everything else is a dict.</p>
+<h2 id="item-retrieval-and-assignment">Item retrieval and assignment</h2>
+<p>The retrieval of items in objects has been standardized. This is done using the methods <code>*_get_item</code> and <code>*_set_item*</code>.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">l </span><span>= (</span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#a5c261;">2</span><span>, </span><span style="color:#a5c261;">3</span><span>)
+</span><span style="color:#d0d0ff;">l</span><span>[0]  </span><span style="color:#95815e;"># 1
+</span><span style="color:#d0d0ff;">l</span><span>[1] = </span><span style="color:#a5c261;">4
+</span><span>
+</span><span style="color:#d0d0ff;">d </span><span>= (</span><span style="color:#d0d0ff;">a </span><span>=&gt; </span><span style="color:#a5c261;">1</span><span>, </span><span style="color:#d0d0ff;">b </span><span>=&gt; </span><span style="color:#a5c261;">2</span><span>)
+</span><span style="color:#d0d0ff;">d</span><span>[&quot;a&quot;]  </span><span style="color:#95815e;"># 1
+</span><span style="color:#d0d0ff;">d</span><span>[&quot;c&quot;] = </span><span style="color:#a5c261;">3  </span><span style="color:#95815e;"># inserts 3 as &quot;c&quot;
+</span></code></pre>
+<p>The current implementations are</p>
+<ul>
+<li><em>dict</em>:
+<ul>
+<li>dict_get_item</li>
+<li>dict_set_item</li>
+</ul>
+</li>
+<li><em>list</em>:
+<ul>
+<li>list_get_item</li>
+<li>list_set_item</li>
+</ul>
+</li>
+<li><em>str</em>:
+<ul>
+<li>str_get_item</li>
+</ul>
+</li>
+</ul>
+<p><em>str</em> objects cannot be modified,</p>
+<h2 id="char-builtin-replaces-syntax-and"><code>Char</code>-builtin replaces <code>[...]</code>-syntax and <code>.</code></h2>
+<p>The previous <code>[...]</code>-syntax for character-classes was removed as it is reserved for the upcoming list syntax, and was replaced by the <code>Char&lt;&gt;</code>-builtin.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#cc7833;">Char         </span><span style="color:#95815e;"># previously `.`
+</span><span style="color:#cc7833;">Char</span><span>&lt;</span><span style="color:#d0d0ff;">a</span><span>-</span><span style="color:#d0d0ff;">z</span><span>&gt;    </span><span style="color:#95815e;"># previously `[a-z]`
+</span><span style="color:#cc7833;">Char</span><span>&lt;^</span><span style="color:#d0d0ff;">a</span><span>-</span><span style="color:#d0d0ff;">z</span><span>&gt;+  </span><span style="color:#95815e;"># previosuly `[^a-z]+`
+</span></code></pre>
+<p>The new syntax already follows the planned syntax design principle for generic parselets, but is integrated into the language and yields in Char-tokens.</p>
+<h2 id="area-syntax">Area syntax <code>@(...)</code></h2>
+<p>This new syntax allows to define a parseable sequences with in-place reader extend.</p>
+<p>Given the program</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">x </span><span>= (</span><span style="color:#cc7833;">Int </span><span>&#39;,&#39; </span><span style="color:#cc7833;">Int</span><span> | </span><span style="color:#cc7833;">Ident</span><span>)
+</span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">repr</span><span>(</span><span style="color:#d0d0ff;">x</span><span>))
+</span></code></pre>
+<p>the <code>print</code> will never be executed, because the sequence in the assignment matches input, and Tokay's default behavor in a block is to accept a matching sequence as an alternative.</p>
+<p>To avoid this behavior (which, indeed, might be a wanted behavior!) and without introducting a new parselet to resolve this, the area syntax can be used:</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#d0d0ff;">x </span><span>= @(</span><span style="color:#cc7833;">Int </span><span>&#39;,&#39; </span><span style="color:#cc7833;">Int</span><span> | </span><span style="color:#cc7833;">Ident</span><span>)
+</span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">repr</span><span>(</span><span style="color:#d0d0ff;">x</span><span>))
+</span></code></pre>
+<p>The region inside the <code>@(...)</code> gets parsed separately, and the reader is extended so that the program continues as expected.</p>
+<h1 id="changelog">Changelog</h1>
+<p>This is the full changelog of this version.</p>
+<ul>
+<li>General
+<ul>
+<li>Use of <a href="https://crates.io/crates/num-parse">num-parse</a> for <code>Int</code> and internal string-to-int conversion ("parseInt()"-like behavior) (#65)</li>
+<li>Updated <code>clap</code> command-line parser to v3 (#61)</li>
+<li>Improving internal <code>testcase</code> function and moving all prior <code>#[test]</code>-functions into separate Tokay testcases (#86)</li>
+</ul>
+</li>
+<li>Syntax
+<ul>
+<li>Operator <code>//</code> for integer division implemented (#92)</li>
+<li>Operator <code>%</code> for modulo operation implemented</li>
+<li>Area syntax <code>@(...)</code> for in-place reader extend (#78)</li>
+<li>Character-class syntax changed from <code>[a-z]</code> into <code>Char&lt;a-z&gt;</code>, <code>.</code> and <code>Any</code> substituted by <code>Char</code> (#98)
+)</li>
+<li>Improved syntax for inline blocks and sequences (<code>|</code>-operator)</li>
+<li>Improved list syntax
+<ul>
+<li><code>()</code> the empty list</li>
+<li><code>(1,)</code> list with one item (explicit comma required)</li>
+</ul>
+</li>
+<li>Implemented <code>x[...]</code> item access syntax for rvalue and lvalue (#80)</li>
+<li>Preliminaries for generic parselets (#10)</li>
+<li>New built-in signatures (#84)</li>
+</ul>
+</li>
+<li>Compiler
+<ul>
+<li>Parser
+<ul>
+<li><code>parser.rs</code> is now generated from <code>tokay.tok</code>; syntax-changes are only done in <code>tokay.tok</code> now! (#93)</li>
+<li>Removed <code>macros.rs</code> and macro-based bootstrap parser entirely</li>
+</ul>
+</li>
+<li>Internal revision
+<ul>
+<li>Removed structs <code>Usage</code> and <code>ImlResult</code></li>
+<li>Integrating all <code>impl Compileable</code>s into <code>ImlOp</code></li>
+<li>Code construction now happens in <code>ImlOp</code> as well</li>
+<li>Added required changes to
+<ul>
+<li>determine whether a part of code consumes input</li>
+<li>preliminaries to generic parselets (yet unfinished)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>prelude.tok</code> provides some default-parselets defined in Tokay itself
+<ul>
+<li><code>Number</code> matches either <code>Float</code> or <code>Int</code></li>
+<li><code>Token</code> matches arbitrary tokens</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Virtual Machine
+<ul>
+<li>Internal refactoring of the essential <code>Context::collect()</code>-function (#67)</li>
+<li><code>Frame</code> is now managed by <code>Context</code></li>
+</ul>
+</li>
+<li>Values
+<ul>
+<li>Turned Value::Int to crate <a href="https://crates.io/crates/num-bigint">num-bigint</a>, replaced Value::Addr by the same type (#55)</li>
+<li>Definition of mutable objects; Imutable objects push a clone of, mutable objects push a ref on the object</li>
+<li><code>dict</code> now allow for any non-mutable value as key (#96)</li>
+</ul>
+</li>
+<li>Builtins
+<ul>
+<li>Added <code>dict.clone()</code>, <code>dict_push()</code>, <code>dict.pop()</code>, <code>dict.get_item()</code>, <code>dict.set_item()</code>, <code>list.get_item()</code>, <code>list.set_item()</code>, <code>str.get_item()</code></li>
+<li>Renamed <code>dict_update()</code> into <code>dict_merge()</code></li>
+</ul>
+</li>
+<li>Examples
+<ul>
+<li>The self-hosted Tokay parser in <code>examples/tokay.tok</code> was now moved into <code>src/compiler/tokay.tok</code> and is used to generate <code>src/compiler/parser.rs</code> (#93)</li>
+<li>The JSON parser example in <code>examples/json.tok</code> was improved to latest developments</li>
+</ul>
+</li>
+</ul>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

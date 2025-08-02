@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tokay v0.6.6 released | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text">2024-06-19</div>
+    <div class="title-text">Tokay v0.6.6 released</div>
+
+    <p>Tokay v0.6.6 is another milestone commit on the current roadmap to version 0.7, which should finalize the major feature of generics.</p>
+<p>The highlights in Tokay v0.6.6 are...</p>
+<span id="continue-reading"></span>
+<ul>
+<li>Improved and revised <code>list</code> and <code>dict</code> syntax
+<ul>
+<li><code>,</code> is now some kind of operator, denoting a list</li>
+<li>just <code>()</code> defines the empty dict, and just <code>,</code> the empty list.</li>
+</ul>
+</li>
+<li>Implementation and use of <code>Keyword&lt;P&gt;</code></li>
+<li><code>Empty</code> and <code>Void</code> clarification</li>
+<li>Improved logging and debug</li>
+<li>Improvements on compiler internals like new <code>Scope</code> struct, refactored <code>ImlValue</code></li>
+</ul>
+<p>The new list syntax is the major feature of this milestone release, as it is not compatible to previous versions.
+See the screenshot below with a REPL executed in Tokay v0.6.5 and Tokay v0.6.6.</p>
+<p>For example, just specifying <code>,</code> defines an empty list. An item followed by <code>,</code> turns the item into a list.</p>
+<p><a href="/news/2024-06-19-tokay_v0.6.6.jpg"><img src="/news/2024-06-19-tokay_v0.6.6.jpg" alt="Two consoles besides showing differences between v0.6.5 and v0.6.6" /></a></p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>

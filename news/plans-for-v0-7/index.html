@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Heavily working on next milestone v0.7 | Tokay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Jan Max Meyer, Phorward Software Technologies">
+	<meta name="generator" content="Zola Static Site Generator">
+	<meta name="description" content="Tokay is a programming language designed for ad-hoc parsing.">
+	<meta name="keywords" content="language, tokay-lang, tokay, programming language, parser, packrat, lexer, lex, yacc, awk, sed, awk-style, awk-like">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="en-US">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <meta property="og:title" content="Tokay programming language">
+    <meta property="og:description" content="Tokay is a programming language designed for ad-hoc parsing.">
+    <meta property="og:image" content="/preview.png">
+    <meta property="og:url" content="https://tokay.dev">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color:#eee;
+        /* Primary theme text color */
+        --primary-text-color: #333;
+        /* Primary theme link color */
+        --primary-link-color: #F26430;
+        /* Secondary color: the background body color */
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #333;
+        /* Highlight text color of table of content */
+        --toc-highlight-text-color: #17BEBB;
+    }
+</style>
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/style.css">
+    
+<script src="/nav.js"></script>
+
+</head>
+
+<body>
+    
+    <header class="box-shadow">
+        
+    
+    <a href="&#x2F;">
+        <div class="logo">
+            <img src="/tokay-logo.svg" alt="Tokay Programming Language">
+        </div>
+    </a>
+
+    <nav>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;about">About</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;news">News</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;quick-start">Quick start</a>
+        
+            <a class="nav-item subtitle-text" href="&#x2F;tokay-docs">Documentation</a>
+        
+            <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;tokay-lang&#x2F;tokay">GitHub</a>
+        
+    </nav>
+
+    </header>
+
+
+    <main>
+        
+            
+                
+            
+
+            
+        
+
+        <div class="content text">
+            
+    <div class="heading-text">2023-06-05</div>
+    <div class="title-text">Heavily working on next milestone v0.7</div>
+
+    <p>Right after releasing <a href="/news/tokay-v0-6">Tokay v0.6</a> as another milestone heavily focusing on internal features, development continues towards v0.7 as a huge milestone with the goals of implementing <em>generic parselets</em> and <em>iterators</em>, which where already made available with <a href="/news/tokay-v0-6-1">Tokay v0.6.1</a>.</p>
+<p>All three goals will significantly change Tokay's syntax in some ways, and establish one of the language's most powerful core features.</p>
+<p>We're hoping to release this big version during summer 2023.</p>
+<span id="continue-reading"></span>
+<p>Generic parselets (<em>generics</em>) will become a fundamental part of Tokay. Generics where already planned from the beginning of the Tokay programming language, but they required some reworks on the compiler and syntax first, which was already laid with Tokay v0.6.1 and Tokay v0.6.2 released in April.</p>
+<p>Generics allow to specify constants to a parselet to define specific parsing behaviors once, and use these behavors in combination for specialized tokens, parselets or even entire grammars. The generics are evalualted duing compile-time and by usage.</p>
+<p>Here's a very small example which already works with the latest commit of pull request <a href="https://github.com/tokay-lang/tokay/pull/105">#105</a>. It effectively implements two parselets, one parsing "axa", the other parsing "bxb". The parselets are separately instanciated, but effectively defned only in one place.</p>
+<pre data-lang="tokay" style="background-color:#383838;color:#e6e1dc;" class="language-tokay "><code class="language-tokay" data-lang="tokay"><span style="color:#95815e;"># Generic parselet T, serving as a template.
+</span><span style="color:#6e9cbe;">T</span><span>: @&lt;</span><span style="color:#6e9cbe;">P</span><span>&gt; {
+</span><span>    </span><span style="color:#6e9cbe;">P </span><span>&#39;x&#39; </span><span style="color:#6e9cbe;">P  </span><span style="color:#d0d0ff;">print</span><span>(</span><span style="color:#d0d0ff;">$0</span><span>)
+</span><span>}
+</span><span>
+</span><span style="color:#95815e;"># The final parselets are instanciated by its usage.
+</span><span style="color:#6e9cbe;">Parse_axa</span><span>: </span><span style="color:#6e9cbe;">T</span><span>&lt;&#39;a&#39;&gt;
+</span><span style="color:#6e9cbe;">Parse_bxb</span><span>: </span><span style="color:#6e9cbe;">T</span><span>&lt;&#39;b&#39;&gt;
+</span><span>
+</span><span style="color:#6e9cbe;">Parse_axa Parse_axa Parse_bxb  </span><span style="color:#95815e;"># parses &quot;axaaxabxb&quot;
+</span></code></pre>
+<p>Generic parselets can also make use of defaults for every constant, and allow for named arguments, equally to function calls at runtime.</p>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+    <footer>
+        <small class="subtext">
+            © 2025 by <a href="https://phorward.dev">Jan Max Meyer, Phorward Software Technologies</a><br>
+            Tokay is free software released under the MIT license.
+        </small>
+    </footer>
+    
+</body>
+</html>
