@@ -20,7 +20,7 @@ Tokay's design highlights are
 - Implements a memoizing packrat parsing algorithm internally
 - Robust and fast, as it is written entirely in safe [Rust](https://rust-lang.org)
 - Enabling awk-style one-liners in combination with other tools
-- Generic functions and parselets
+- Generic functions and parselets (*partly implemented)
 - Import system to create modularized programs (*coming soon)
 - Embedded interoperability with other programs (*coming soon)
 
